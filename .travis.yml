@@ -1,17 +1,22 @@
-language: c
+language: python
 
-sudo: false
+env:
+  global:
+    - VERSION='3.5-dev'
+    - ALIAS='3.5'
+    - INSTALL_DEST=/opt/python
+    - PACKAGES='numpy nose pytest mock wheel'
 
 install:
-  - pushd $HOME
-  - git clone --depth=1 https://github.com/python/cpython.git
-  - pushd cpython
-  - ./configure --prefix = $HOME/python
-  - make
-  - make install
-  - du -hs $HOME/python
-  - popd; popd
+  - true
 
 script:
-  - pushd $HOME/cpython
-  - make test
+  - cd $HOME
+  - sudo python-build $VERSION $INSTALL_DEST
+  - sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
+  - virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python /home/travis/virtualenv/python$VERSION
+  - ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
+  - tar cf python-$VERSION.tar $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - bzip2 python-$VERSION.tar
+  - ls -lh python-$VERSION.tar.bz2
