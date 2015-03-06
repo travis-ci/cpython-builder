@@ -17,6 +17,15 @@ script:
   - virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python /home/travis/virtualenv/python$VERSION
   - ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
   - $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
-  - tar cf python-$VERSION.tar $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
-  - bzip2 python-$VERSION.tar
-  - ls -lh python-$VERSION.tar.bz2
+
+after_success:
+  - mkdir $HOME/archive
+  - tar cjf $HOME/archive/python-$VERSION.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - ls -lh $HOME/archive/python-$VERSION.tar.bz2
+
+deploy:
+  provider: s3
+  access_key_id: $ARTIFACTS_KEY
+  secret_access_key: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
+  local_dir: $HOME/archive
