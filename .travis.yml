@@ -1,0 +1,17 @@
+language: c
+
+sudo: false
+
+install:
+  - pushd $HOME
+  - git clone --depth=1 git@github.com:python/cpython.git
+  - pushd cpython
+  - ./configure --prefix = $HOME/python
+  - make
+  - make install
+  - du -hs $HOME/python
+  - popd; popd
+
+script:
+  - pushd $HOME/cpython
+  - make test
