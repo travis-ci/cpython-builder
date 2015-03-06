@@ -4,7 +4,7 @@ sudo: false
 
 install:
   - pushd $HOME
-  - git clone --depth=1 git@github.com:python/cpython.git
+  - git clone --depth=1 https://github.com/python/cpython.git
   - pushd cpython
   - ./configure --prefix = $HOME/python
   - make
