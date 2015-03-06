@@ -11,12 +11,13 @@ install:
   - true
 
 script:
-  - cd $HOME
+  - pushd $HOME
   - sudo python-build $VERSION $INSTALL_DEST/$VERSION
   - sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
   - virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python /home/travis/virtualenv/python$VERSION
   - ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
   - $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
+  - popd
 
 after_success:
   - mkdir $HOME/archive
