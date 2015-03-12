@@ -3,7 +3,7 @@ language: python
 env:
   global:
     - VERSION='3.5-dev'
-    - ALIAS='3.5'
+    - ALIAS='nightly'
     - INSTALL_DEST=/opt/python
     - PACKAGES='numpy nose pytest mock wheel'
 
@@ -21,8 +21,8 @@ script:
 
 after_success:
   - mkdir $HOME/archive
-  - tar cjf $HOME/archive/python-$VERSION.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
-  - ls -lh $HOME/archive/python-$VERSION.tar.bz2
+  - tar cjf $HOME/archive/python-nightly.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - ls -lh $HOME/archive/python-nightly.tar.bz2
 
 deploy:
   provider: s3
