@@ -5,7 +5,7 @@ env:
     - VERSION='3.5-dev'
     - ALIAS='nightly'
     - INSTALL_DEST=/opt/python
-    - PACKAGES='numpy nose pytest mock wheel'
+    - PACKAGES='pip numpy nose pytest mock wheel'
 
 install:
   - true
