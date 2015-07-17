@@ -12,7 +12,7 @@ install:
 
 script:
   - pushd $HOME
-  - sudo env PYTHON_BUILD_ROOT=$TRAVIS_BUILD_DIR python-build $VERSION $INSTALL_DEST/$ALIAS
+  - sudo env PYTHON_BUILD_DEFINITIONS=$TRAVIS_BUILD_DIR python-build $VERSION $INSTALL_DEST/$ALIAS
   - sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
   - virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python /home/travis/virtualenv/python$VERSION
   - ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
