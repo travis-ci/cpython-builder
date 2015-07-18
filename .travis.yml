@@ -9,9 +9,8 @@ env:
 
 install:
   - pushd /opt/pyenv/
-  - sudo git remote add fork https://github.com/BanzaiMan/pyenv.git
-  - sudo git fetch fork
-  - sudo git checkout fork/ha-feature-py36
+  - sudo git checkout master
+  - sudo git pull
   - popd
 
 script:
