@@ -7,7 +7,7 @@ env:
     - PACKAGES='pip numpy nose pytest mock wheel'
 
 install:
-  - test -z $VERSION && echo "\$VERSION not defined" && travis_terminate 2
+  - [ -z "$VERSION" ] && echo "\$VERSION not defined" && travis_terminate 2
   - pushd /opt/pyenv/
   - sudo git checkout master
   - sudo git pull
