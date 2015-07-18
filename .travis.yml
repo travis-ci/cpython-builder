@@ -27,6 +27,9 @@ after_success:
   - tar cjf $HOME/archive/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
   - ls -lh $HOME/archive/python-$ALIAS.tar.bz2
 
+after_failure:
+  - cat /tmp/python-build.*.log
+
 deploy:
   provider: s3
   access_key_id: $ARTIFACTS_KEY
