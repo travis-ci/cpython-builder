@@ -36,5 +36,6 @@ deploy:
   secret_access_key: $ARTIFACTS_SECRET
   bucket: $ARTIFACTS_BUCKET
   local_dir: $HOME/archive
-  all_branches: true
+  on:
+    all_branches: true
   acl: public_read
