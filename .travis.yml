@@ -1,5 +1,15 @@
 language: python
 
+matrix:
+  include:
+    - sudo: required
+      services:
+        - docker
+      env:
+        - RELEASE=trusty
+    - sudo: required
+        - RELEASE=precise
+
 env:
   global:
     - VERSION='3.6-dev'
@@ -23,9 +33,9 @@ script:
   - popd
 
 after_success:
-  - mkdir $HOME/archive
-  - tar cjf $HOME/archive/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
-  - ls -lh $HOME/archive/python-$ALIAS.tar.bz2
+  - mkdir $HOME/archive/$(lsb_release -rs)
+  - tar cjf $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - ls -lh $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2
 
 after_failure:
   - cat /tmp/python-build.*.log
@@ -35,7 +45,7 @@ deploy:
   access_key_id: $ARTIFACTS_KEY
   secret_access_key: $ARTIFACTS_SECRET
   bucket: $ARTIFACTS_BUCKET
-  local_dir: $HOME/archive
+  local_dir: $HOME/archive/$(lsb_release -rs)
   on:
     all_branches: true
   acl: public_read
