@@ -51,7 +51,7 @@ before_deploy:
   - git fetch jw
   - git merge --no-edit jw/s3-aws-sdk-v2 master
   - rvm 1.9.3 do gem build dpl.gemspec
-  - mv dpl-*.gem ..
+  - mv dpl-*.gem $TRAVIS_BUILD_DIR
   - popd
 
 deploy:
