@@ -34,7 +34,7 @@ script:
   - popd
 
 after_success:
-  - mkdir $HOME/archive/$(lsb_release -rs)
+  - mkdir -p $HOME/archive/$(lsb_release -rs)
   - tar cjf $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
   - ls -lh $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2
 
