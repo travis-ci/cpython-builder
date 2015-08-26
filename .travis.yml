@@ -46,7 +46,6 @@ before_deploy:
   - pushd dpl
   - git config user.email "you@example.com"
   - git config user.name "Your Name"
-  - unset CI
   - git remote add jw https://github.com/johanneswuerbach/dpl.git
   - git fetch jw
   - git merge --no-edit jw/s3-aws-sdk-v2 master
