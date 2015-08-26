@@ -41,21 +41,8 @@ after_success:
 after_failure:
   - cat /tmp/python-build.*.log
 
-before_deploy:
-  - git clone https://github.com/travis-ci/dpl.git
-  - pushd dpl
-  - git config user.email "you@example.com"
-  - git config user.name "Your Name"
-  - git remote add jw https://github.com/johanneswuerbach/dpl.git
-  - git fetch jw
-  - git merge --no-edit jw/s3-aws-sdk-v2 master
-  - rvm 1.9.3 do gem build dpl.gemspec
-  - mv dpl-*.gem $TRAVIS_BUILD_DIR
-  - popd
-
 deploy:
   provider: s3
-  edge: local
   access_key_id: $ARTIFACTS_KEY
   secret_access_key: $ARTIFACTS_SECRET
   bucket: $ARTIFACTS_BUCKET
