@@ -21,9 +21,9 @@ script:
   - popd
 
 after_success:
-  - mkdir $HOME/archive
-  - tar cjf $HOME/archive/python-$VERSION.tar.bz2 $INSTALL_DEST/$VERSION $HOME/virtualenv/python$VERSION
-  - ls -lh $HOME/archive/python-$VERSION.tar.bz2
+  - mkdir -p $HOME/archive/$(lsb_release -rs)
+  - tar cjf $HOME/archive/$(lsb_release -rs)/python-$VERSION.tar.bz2 $INSTALL_DEST/$VERSION $HOME/virtualenv/python$VERSION
+  - ls -lh $HOME/archive/$(lsb_release -rs)/python-$VERSION.tar.bz2
 
 after_failure:
   - cat /tmp/python-build.*.log
@@ -33,7 +33,8 @@ deploy:
   access_key_id: $ARTIFACTS_KEY
   secret_access_key: $ARTIFACTS_SECRET
   bucket: $ARTIFACTS_BUCKET
-  local_dir: $HOME/archive
+  local_dir: $HOME/archive/$(lsb_release -rs)
+  upload_dir: $(lsb_release -rs)
   on:
     all_branches: true
   acl: public_read
