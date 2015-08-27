@@ -1,5 +1,15 @@
 language: python
 
+matrix:
+  include:
+    - sudo: required
+      services: docker
+      env:
+        - RELEASE=trusty
+    - sudo: required
+      env:
+        - RELEASE=precise
+
 env:
   global:
     - VERSION='3.4.3'
