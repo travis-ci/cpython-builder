@@ -2,7 +2,7 @@ language: python
 
 env:
   global:
-    - VERSION='3.3.6'
+    - VERSION='3.4.3'
     - INSTALL_DEST=/opt/python
     - PACKAGES='pip numpy nose pytest mock wheel'
 
