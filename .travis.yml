@@ -12,7 +12,7 @@ matrix:
 
 env:
   global:
-    - VERSION='3.5.0rc2'
+    - VERSION='2.7.10'
     - INSTALL_DEST=/opt/python
     - PACKAGES='pip numpy nose pytest mock wheel'
 
