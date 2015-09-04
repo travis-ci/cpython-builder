@@ -40,9 +40,6 @@ after_failure:
 
 deploy:
   provider: s3
-  edge:
-    source: johanneswuerbach/dpl
-    branch: s3-aws-sdk-v2
   access_key_id: $ARTIFACTS_KEY
   secret_access_key: $ARTIFACTS_SECRET
   bucket: $ARTIFACTS_BUCKET
