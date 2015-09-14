@@ -3,7 +3,8 @@ language: python
 matrix:
   include:
     - sudo: required
-      services: docker
+      services:
+        - docker
       env:
         - RELEASE=trusty
     - sudo: required
