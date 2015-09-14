@@ -37,6 +37,7 @@ script:
 after_success:
   - mkdir -p $HOME/archive/$(lsb_release -rs)
   - tar cjf $HOME/archive/$(lsb_release -rs)/python-$VERSION.tar.bz2 $INSTALL_DEST/$VERSION $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - if [ -n $ALIAS ]; then cp $HOME/archive/$(lsb_release -rs)/python-$VERSION.tar.bz2 $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2; fi
   - ls -lh $HOME/archive/$(lsb_release -rs)/python-*.tar.bz2
 
 after_failure:
