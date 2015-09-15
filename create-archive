@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -o errexit
+set -o xtrace
 
 [[ $LSB_RELEASE ]]
 [[ $INSTALL_DEST ]]
