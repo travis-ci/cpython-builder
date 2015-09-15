@@ -36,4 +36,11 @@ fi
 mkdir -p $(dirname $DEST)
 tar -cjf $DEST $TAR_PATHS
 
+cd $(dirname $DEST) &>/dev/null
+
+shopt -s nullglob
+for f in *.* ; do
+  sha256sum $f > ${f}.sha256sum.txt
+done
+
 echo "---> $DEST"
