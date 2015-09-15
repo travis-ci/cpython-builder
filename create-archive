@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+[[ $LSB_RELEASE ]]
+[[ $INSTALL_DEST ]]
+[[ $VERSION ]]
+
+: ${TAR_PATHS:=}
+: ${DEST:=${1}}
+
+TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$VERSION $HOME/virtualenv/python$VERSION"
+
+if [[ $ALIAS ]] ; then
+  TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$ALIAS"
+  DEST="$TRAVIS_BUILD_DIR/$LSB_RELEASE/python-${ALIAS}.tar.bz2"
+else
+  if [[ ! $DEST ]] ; then
+    DEST="$TRAVIS_BUILD_DIR/$LSB_RELEASE/python-${VERSION}.tar.bz2"
+  fi
+fi
+
+mkdir -p $(dirname $DEST)
+exec tar -cjf $DEST $TAR_PATHS
