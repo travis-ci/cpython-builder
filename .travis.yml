@@ -40,6 +40,6 @@ after_failure:
 addons:
   artifacts:
     paths:
-    - $LSB_RELEASE
+    - $LSB_RELEASE/
     target_paths:
-    - /
+    - /$LSB_RELEASE

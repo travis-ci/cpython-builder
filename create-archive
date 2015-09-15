@@ -34,4 +34,6 @@ else
 fi
 
 mkdir -p $(dirname $DEST)
-exec tar -cjf $DEST $TAR_PATHS
+tar -cjf $DEST $TAR_PATHS
+
+echo "---> $DEST"
