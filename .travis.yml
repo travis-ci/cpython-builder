@@ -39,4 +39,4 @@ addons:
     paths:
     - $LSB_RELEASE
     target_paths:
-    - ""
+    - /
