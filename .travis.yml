@@ -26,6 +26,9 @@ before_script:
   - ": ${INSTALL_DEST:=/opt/python}"
   - ": ${LSB_RELEASE:=$(lsb_release -rs)}"
   - ": ${PACKAGES:=pip numpy nose pytest mock wheel}"
+  - export INSTALL_DEST
+  - export LSB_RELEASE
+  - export PACKAGES
 
 script: ./build-python
 
