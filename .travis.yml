@@ -15,15 +15,17 @@ env:
   global:
     - VERSION='3.6-dev'
     - ALIAS='nightly'
-    - INSTALL_DEST=/opt/python
-    - PACKAGES='pip numpy nose pytest mock wheel'
-    - LSB_RELEASE="$(lsb_release -rs)"
 
 install:
   - pushd /opt/pyenv/
   - sudo git checkout master
   - sudo git pull
   - popd
+
+before_script:
+  - ": ${INSTALL_DEST:=/opt/python}"
+  - ": ${LSB_RELEASE:=$(lsb_release -rs)}"
+  - ": ${PACKAGES:=pip numpy nose pytest mock wheel}"
 
 script: ./build-python
 
