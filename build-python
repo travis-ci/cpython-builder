@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
 set -o errexit
-set -o xtrace
 
-[[ $INSTALL_DEST ]]
-[[ $VERSION ]]
+if [[ ! $INSTALL_DEST ]] ; then
+  echo 'Missing INSTALL_DEST'
+  exit 1
+fi
+
+if [[ ! $VERSION ]] ; then
+  echo 'Missing $VERSION'
+  exit 1
+fi
+
+set -o xtrace
 
 sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
   /opt/pyenv/plugins/python-build/bin/python-build $VERSION $INSTALL_DEST/$VERSION

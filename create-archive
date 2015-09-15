@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 
 set -o errexit
-set -o xtrace
 
-[[ $LSB_RELEASE ]]
-[[ $INSTALL_DEST ]]
-[[ $VERSION ]]
+if [[ ! $LSB_RELEASE ]] ; then
+  echo 'Missing LSB_RELEASE'
+  exit 1
+fi
+
+if [[ ! $INSTALL_DEST ]] ; then
+  echo 'Missing INSTALL_DEST'
+  exit 1
+fi
+
+if [[ ! $VERSION ]] ; then
+  echo 'Missing VERSION'
+  exit 1
+fi
+
+set -o xtrace
 
 : ${TAR_PATHS:=}
 : ${DEST:=${1}}
