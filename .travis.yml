@@ -17,6 +17,7 @@ env:
     - ALIAS='nightly'
     - INSTALL_DEST=/opt/python
     - PACKAGES='pip numpy nose pytest mock wheel'
+    - LSB_RELEASE="$(lsb_release -rs)"
 
 install:
   - pushd /opt/pyenv/
@@ -34,20 +35,16 @@ script:
   - popd
 
 after_success:
-  - mkdir -p $HOME/archive/$(lsb_release -rs)
-  - tar cjf $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
-  - ls -lh $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2
+  - mkdir -p $HOME/archive/$LSB_RELEASE
+  - tar cjf $HOME/archive/$LSB_RELEASE/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  - ls -lh $HOME/archive/$LSB_RELEASE/python-$ALIAS.tar.bz2
 
 after_failure:
   - cat /tmp/python-build.*.log
 
-deploy:
-  provider: s3
-  access_key_id: $ARTIFACTS_KEY
-  secret_access_key: $ARTIFACTS_SECRET
-  bucket: $ARTIFACTS_BUCKET
-  local_dir: $HOME/archive/$(lsb_release -rs)
-  upload_dir: $(lsb_release -rs)
-  on:
-    all_branches: true
-  acl: public_read
+addons:
+  artifacts:
+    paths:
+    - $HOME/archive/$LSB_RELEASE
+    target_paths:
+    - $LSB_RELEASE
