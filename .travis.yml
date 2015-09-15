@@ -23,12 +23,9 @@ install:
   - popd
 
 before_script:
-  - ": ${INSTALL_DEST:=/opt/python}"
-  - ": ${LSB_RELEASE:=$(lsb_release -rs)}"
-  - ": ${PACKAGES:=pip numpy nose pytest mock wheel}"
-  - export INSTALL_DEST
-  - export LSB_RELEASE
-  - export PACKAGES
+  - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
+  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs)}'
+  - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
 
 script: ./build-python
 
