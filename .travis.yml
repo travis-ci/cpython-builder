@@ -15,8 +15,6 @@ env:
   global:
     - VERSION='3.6-dev'
     - ALIAS='nightly'
-    - INSTALL_DEST=/opt/python
-    - PACKAGES='pip numpy nose pytest mock wheel'
 
 install:
   - pushd /opt/pyenv/
@@ -24,30 +22,21 @@ install:
   - sudo git pull
   - popd
 
-script:
-  - pushd $HOME
-  - sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build /opt/pyenv/plugins/python-build/bin/python-build $VERSION $INSTALL_DEST/$VERSION
-  - sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
-  - virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python /home/travis/virtualenv/python$VERSION
-  - ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
-  - $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
-  - popd
+before_script:
+  - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
+  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs)}'
+  - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
 
-after_success:
-  - mkdir -p $HOME/archive/$(lsb_release -rs)
-  - tar cjf $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2 $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
-  - ls -lh $HOME/archive/$(lsb_release -rs)/python-$ALIAS.tar.bz2
+script: ./build-python
+
+after_success: ./create-archive
 
 after_failure:
   - cat /tmp/python-build.*.log
 
-deploy:
-  provider: s3
-  access_key_id: $ARTIFACTS_KEY
-  secret_access_key: $ARTIFACTS_SECRET
-  bucket: $ARTIFACTS_BUCKET
-  local_dir: $HOME/archive/$(lsb_release -rs)
-  upload_dir: $(lsb_release -rs)
-  on:
-    all_branches: true
-  acl: public_read
+addons:
+  artifacts:
+    paths:
+    - $LSB_RELEASE/
+    target_paths:
+    - /$LSB_RELEASE
