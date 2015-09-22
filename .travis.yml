@@ -13,8 +13,8 @@ matrix:
 
 env:
   global:
-    - VERSION='3.6-dev'
-    - ALIAS='nightly'
+    - VERSION='3.5.0'
+    - ALIAS='3.5'
 
 install:
   - if [ -z "$VERSION" ]; then echo "\$VERSION not defined" && travis_terminate 2; fi
