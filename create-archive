@@ -36,6 +36,10 @@ fi
 mkdir -p $(dirname $DEST)
 tar -cjf $DEST $TAR_PATHS
 
+if [[ $ALIAS ]]; then
+  cp $DEST "$TRAVIS_BUILD_DIR/$LSB_RELEASE/python-${VERSION}.tar.bz2"
+fi
+
 cd $(dirname $DEST) &>/dev/null
 
 shopt -s nullglob
