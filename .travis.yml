@@ -22,21 +22,23 @@ install:
   - sudo git pull
   - popd
 
-before_script:
-  - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs)}'
-  - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
+  before_script:
+    - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
+    - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
+    - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || "osx")}'
+    - 'export ARCH=${ARCH:-$(uname -m)}'
+    - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
 
-script: ./build-python
+  script: ./build-python
 
-after_success: ./create-archive
+  after_success: ./create-archive
 
-after_failure:
-  - cat /tmp/python-build.*.log
+  after_failure:
+    - cat /tmp/python-build.*.log
 
-addons:
-  artifacts:
-    paths:
-    - $LSB_RELEASE/
-    target_paths:
-    - /$LSB_RELEASE
+  addons:
+    artifacts:
+      paths:
+      - $LSB_RELEASE/
+      target_paths:
+      - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
