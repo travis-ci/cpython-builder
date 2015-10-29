@@ -24,7 +24,9 @@ install:
 
 before_script:
   - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs)}'
+  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
+  - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || "osx")}'
+  - 'export ARCH=${ARCH:-$(uname -m)}'
   - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
 
 script: ./build-python
@@ -39,4 +41,4 @@ addons:
     paths:
     - $LSB_RELEASE/
     target_paths:
-    - /$LSB_RELEASE
+    - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
