@@ -10,6 +10,9 @@ matrix:
     - sudo: required
       env:
         - RELEASE=precise
+    - os: osx
+      env:
+        - RELEASE=mavericks
 
 env:
   global:
