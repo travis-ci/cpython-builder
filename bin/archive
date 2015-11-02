@@ -22,14 +22,29 @@ set -o xtrace
 : ${TAR_PATHS:=}
 : ${DEST:=${1}}
 
-TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$VERSION $HOME/virtualenv/python$VERSION"
+if [[ $VERSION =~ ^python|pypy ]] ; then
+  VERSION="${VERSION}"
+  SHORT_VERSION="${VERSION}"
+else
+  SHORT_VERSION="python${VERSION}"
+  VERSION="python-${VERSION}"
+fi
+
+TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$VERSION $HOME/virtualenv/${SHORT_VERSION}"
 
 if [[ $ALIAS ]] ; then
-  TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$ALIAS $HOME/virtualenv/python$ALIAS"
-  DEST="$TRAVIS_BUILD_DIR/$LSB_RELEASE/python-${ALIAS}.tar.bz2"
+  if [[ $ALIAS =~ ^python|pypy ]] ; then
+    SHORT_ALIAS="${ALIAS}"
+    LONG_ALIAS="${ALIAS}"
+  else
+    SHORT_ALIAS="python${ALIAS}"
+    LONG_ALIAS="python-${ALIAS}"
+  fi
+  TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$ALIAS $HOME/virtualenv/${SHORT_ALIAS}"
+  DEST="$TRAVIS_BUILD_DIR/$LSB_RELEASE/${LONG_ALIAS}.tar.bz2"
 else
   if [[ ! $DEST ]] ; then
-    DEST="$TRAVIS_BUILD_DIR/$LSB_RELEASE/python-${VERSION}.tar.bz2"
+    DEST="$TRAVIS_BUILD_DIR/$LSB_RELEASE/${VERSION}.tar.bz2"
   fi
 fi
 
