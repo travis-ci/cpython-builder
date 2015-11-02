@@ -3,38 +3,35 @@ language: python
 matrix:
   include:
     - sudo: required
-      services:
-        - docker
-      env:
-        - RELEASE=trusty
+      services: docker
+      env: RELEASE=trusty
     - sudo: required
-      env:
-        - RELEASE=precise
+      env: RELEASE=precise
 
 env:
   global:
-    - VERSION='3.6-dev'
-    - ALIAS='nightly'
+  - VERSION='3.5.0'
+  - ALIAS='3.5'
 
 install:
-  - pushd /opt/pyenv/
-  - sudo git checkout master
-  - sudo git pull
-  - popd
+- pushd /opt/pyenv/
+- sudo git checkout master
+- sudo git pull
+- popd
 
 before_script:
-  - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
-  - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || "osx")}'
-  - 'export ARCH=${ARCH:-$(uname -m)}'
-  - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
+- 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
+- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
+- 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || "osx")}'
+- 'export ARCH=${ARCH:-$(uname -m)}'
+- 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
 
-script: ./build-python
+script: ./bin/compile
 
-after_success: ./create-archive
+after_success: ./bin/archive
 
 after_failure:
-  - cat /tmp/python-build.*.log
+- cat /tmp/python-build.*.log
 
 addons:
   artifacts:
