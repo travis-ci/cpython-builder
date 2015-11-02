@@ -49,12 +49,14 @@ for DEST in $DESTS ; do
   mkdir -p $(dirname $DEST)
   tar -cjf $DEST $TAR_PATHS
 
-  cd $(dirname $DEST) &>/dev/null
+  pushd $(dirname $DEST) &>/dev/null
 
   shopt -s nullglob
   for f in *.* ; do
     sha256sum $f > ${f}.sha256sum.txt
   done
+
+  popd &>/dev/null
 
   echo "---> $DEST"
 done
