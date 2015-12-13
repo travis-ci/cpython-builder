@@ -19,7 +19,7 @@ fi
 
 set -o xtrace
 
-: ${TAR_PATHS:=}
+: ${TAR_PATHS:=$INSTALL_DEST/$VERSION}
 : ${DESTS:=}
 
 if [[ $VERSION =~ ^python|pypy ]] ; then
