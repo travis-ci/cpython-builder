@@ -19,7 +19,7 @@ fi
 
 set -o xtrace
 
-: ${TAR_PATHS:=}
+: ${TAR_PATHS:=$INSTALL_DEST/$VERSION}
 : ${DESTS:=}
 
 if [[ $VERSION =~ ^python|pypy ]] ; then
@@ -47,7 +47,7 @@ fi
 
 for DEST in $DESTS ; do
   mkdir -p $(dirname $DEST)
-  tar -cjf $DEST $TAR_PATHS
+  tar -cjf $DEST $(ls -d $TAR_PATHS 2>/dev/null || true)
 
   pushd $(dirname $DEST) &>/dev/null
 
