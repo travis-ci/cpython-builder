@@ -24,18 +24,18 @@ before_script:
 - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
 - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
-- 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
+- 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel scipy}'
 - export PYTHON_COFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
 
 script: ./bin/compile
 
-after_success: ./bin/archive
+# after_success: ./bin/archive
 
 after_failure: cat /tmp/python-build.*.log
 
-addons:
-  artifacts:
-    paths:
-    - $LSB_RELEASE/
-    target_paths:
-    - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
+# addons:
+#   artifacts:
+#     paths:
+#     - $LSB_RELEASE/
+#     target_paths:
+#     - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
