@@ -29,5 +29,6 @@ if [[ $ALIAS ]] ; then
 fi
 
 if [[ $PACKAGES ]] ; then
-  $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
+  source $HOME/virtualenv/python$VERSION/bin/activate
+  pip install --upgrade $PACKAGES
 fi
