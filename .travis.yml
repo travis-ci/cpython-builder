@@ -28,6 +28,7 @@ before_script:
 - export PYTHON_COFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
 - sudo apt-get update -qq
 - sudo apt-get install -y liblapack-dev gfortran
+- export BLAS=$(find /usr/lib -name libblas.so -print)
 
 script: ./bin/compile
 
