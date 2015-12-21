@@ -27,7 +27,7 @@ before_script:
 - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel scipy}'
 - export PYTHON_COFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
 - sudo apt-get update -qq
-- sudo apt-get install -y liblapack-dev gfortran python-scipy
+- sudo apt-get install -y liblapack-dev gfortran
 
 script: ./bin/compile
 
