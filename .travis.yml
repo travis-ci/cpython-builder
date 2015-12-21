@@ -10,7 +10,7 @@ matrix:
 
 env:
   global:
-  - VERSION='2.7.10'
+  - VERSION='3.5.0'
   - ALIAS=$VERSION
 
 install:
