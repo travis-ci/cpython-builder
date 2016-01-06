@@ -25,7 +25,7 @@ before_script:
 - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
 - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
-- export PYTHON_COFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
+- export PYTHON_CONFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
 
 script: ./bin/compile
 
