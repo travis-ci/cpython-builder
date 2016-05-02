@@ -7,6 +7,9 @@ matrix:
       env: RELEASE=trusty
     - sudo: required
       env: RELEASE=precise
+    - os: osx
+      osx_image: xcode7.3
+      env: RELEASE=el_capitan
 
 env:
   global:
@@ -21,8 +24,8 @@ install:
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
-- 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
+- export LSB_RELEASE=$(lsb_release -rs 2>/dev/null || sw_vers -productVersion | sed 's/^\([0-9][0-9]*.[0-9][0-9]*\).*/\1/')
+- 'export OS_NAME=${OS_NAME:-$((lsb_release -is || echo "osx") | tr "A-Z" "a-z")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
 - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
 - export PYTHON_COFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
