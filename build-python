@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+fold_start() {
+  echo -e "travis_fold:start:$1\033[33;1m$2\033[0m"
+}
+
+fold_end() {
+  echo -e "\ntravis_fold:end:$1\r"
+}
+
 set -o errexit
 
 if [[ ! $INSTALL_DEST ]] ; then
@@ -14,21 +22,39 @@ fi
 
 set -o xtrace
 
+fold_start "python-build" "Building Python $VERSION"
+
 sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
   PYTHON_CONFIGURE_OPTS="--enable-shared" \
   /opt/pyenv/plugins/python-build/bin/python-build $VERSION $INSTALL_DEST/$VERSION
 
+fold_end "python-build"
+
+fold_start "alias" "Setting up alias $ALIAS"
+
 if [[ $ALIAS ]] ; then
+  sudo rm -f $INSTALL_DEST/$ALIAS
   sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
 fi
+
+fold_end "alias"
+
+fold_start virtualenv "Setting up virtualenv"
 
 virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python \
   /home/travis/virtualenv/python$VERSION
 
 if [[ $ALIAS ]] ; then
+  rm -f $HOME/virtualenv/python$ALIAS
   ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
 fi
+
+fold_end virtualenv
+
+fold_start packages "Installing packages $PACKAGES"
 
 if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
 fi
+
+fold_end
