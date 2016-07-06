@@ -13,7 +13,7 @@ matrix:
 
 env:
   global:
-    - VERSION='3.5.0'
+    - VERSION='3.5.2'
     - ALIAS='3.5'
 
 install:
