@@ -30,7 +30,7 @@ elif [[ $VERSION = pypy3* ]]; then
   VIRTENV_VERSION=$VERSION
 else
   PYTHON_BIN=python
-	VIRTENV_VERSION=python$VERSION
+  VIRTENV_VERSION=python$VERSION
 fi
 
 virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python \
