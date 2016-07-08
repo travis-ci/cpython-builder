@@ -21,15 +21,15 @@ if [[ $ALIAS ]] ; then
   sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
 fi
 
+# set up virtualenv arguments
 if [[ $VERSION = pypy-* ]]; then
 	PYTHON_BIN=pypy
+  VIRTENV_VERSION=$VERSION
 elif [[ $VERSION = pypy3* ]]; then
-	PYTHON_BIN=pypy3
+  PYTHON_BIN=pypy3
+  VIRTENV_VERSION=$VERSION
 else
-	PYTHON_BIN=python
-fi
-
-if [[ $VERSION != pypy* ]]; then
+  PYTHON_BIN=python
 	VIRTENV_VERSION=python$VERSION
 fi
 
