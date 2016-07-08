@@ -46,8 +46,8 @@ fi
 
 if [[ $CPYTHON_ONLY_PKGS ]] ; then
   if [[ $VERSION =~ ^pypy ]]; then
-    $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS || true
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS || true
   else
-    $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS
   fi
 fi
