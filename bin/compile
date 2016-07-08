@@ -34,7 +34,7 @@ else
 fi
 
 virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python \
-  /home/travis/virtualenv/$VIRTENV_VERSION
+  $HOME/virtualenv/$VIRTENV_VERSION
 
 if [[ $ALIAS ]] ; then
   ln -s $HOME/virtualenv/$VIRTENV_VERSION $HOME/virtualenv/python$ALIAS
