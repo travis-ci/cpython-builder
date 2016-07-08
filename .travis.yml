@@ -10,8 +10,8 @@ matrix:
 
 env:
   global:
-  - VERSION='2.7.10'
-  - ALIAS=$VERSION
+  - VERSION='3.6-dev'
+  - ALIAS=nightly
 
 install:
 - pushd /opt/pyenv/
