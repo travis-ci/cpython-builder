@@ -23,7 +23,7 @@ fi
 
 # set up virtualenv arguments
 if [[ $VERSION = pypy-* ]]; then
-	PYTHON_BIN=pypy
+  PYTHON_BIN=pypy
   VIRTENV_VERSION=$VERSION
 elif [[ $VERSION = pypy3* ]]; then
   PYTHON_BIN=pypy3
