@@ -21,13 +21,33 @@ if [[ $ALIAS ]] ; then
   sudo ln -s $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
 fi
 
+# set up virtualenv arguments
+if [[ $VERSION = pypy-* ]]; then
+  PYTHON_BIN=pypy
+  VIRTENV_VERSION=$VERSION
+elif [[ $VERSION = pypy3* ]]; then
+  PYTHON_BIN=pypy3
+  VIRTENV_VERSION=$VERSION
+else
+  PYTHON_BIN=python
+  VIRTENV_VERSION=python$VERSION
+fi
+
 virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python \
-  $HOME/virtualenv/python$VERSION
+  $HOME/virtualenv/$VIRTENV_VERSION
 
 if [[ $ALIAS ]] ; then
-  ln -s $HOME/virtualenv/python$VERSION $HOME/virtualenv/python$ALIAS
+  ln -s $HOME/virtualenv/$VIRTENV_VERSION $HOME/virtualenv/python$ALIAS
 fi
 
 if [[ $PACKAGES ]] ; then
-  $HOME/virtualenv/python$VERSION/bin/pip install --upgrade $PACKAGES
+  $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
+fi
+
+if [[ $CPYTHON_ONLY_PKGS ]] ; then
+  if [[ $VERSION =~ ^pypy ]]; then
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS || true
+  else
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS
+  fi
 fi

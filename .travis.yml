@@ -24,7 +24,8 @@ before_script:
 - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
 - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
-- 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
+- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel}'
+- 'export CPYTHON_ONLY_PKGS="numpy"'
 - export PYTHON_COFIGURE_OPTS="$CONFIGURE_OPTS --enable-unicode=ucs4"
 
 script: ./bin/compile
