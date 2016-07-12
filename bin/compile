@@ -40,6 +40,8 @@ if [[ $ALIAS ]] ; then
   ln -s $HOME/virtualenv/$VIRTENV_VERSION $HOME/virtualenv/python$ALIAS
 fi
 
+$HOME/virtualenv/$VIRTENV_VERSION/bin/python -c "import sys; assert sys.maxunicode > 65535"
+
 if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
 fi
