@@ -18,6 +18,7 @@ install:
 - sudo git checkout master
 - sudo git pull
 - popd
+- python -m pip install virtualenv
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
