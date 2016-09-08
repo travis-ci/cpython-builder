@@ -12,6 +12,14 @@ if [[ ! $VERSION ]] ; then
   exit 1
 fi
 
+function install_numpy() {
+  if [[ $VERSION =~ ^pypy ]]; then
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip -m pip install git+https://bitbucket.org/pypy/numpy.git
+  else
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS
+  fi
+}
+
 set -o xtrace
 
 sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
@@ -46,10 +54,5 @@ if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
 fi
 
-if [[ $CPYTHON_ONLY_PKGS ]] ; then
-  if [[ $VERSION =~ ^pypy ]]; then
-    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS || true
-  else
-    $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $CPYTHON_ONLY_PKGS
-  fi
-fi
+install_numpy
+
