@@ -35,6 +35,9 @@ after_success: ./bin/archive
 after_failure: cat /tmp/python-build.*.log
 
 addons:
+  apt:
+    packages:
+      - openssl
   artifacts:
     paths:
     - $LSB_RELEASE/
