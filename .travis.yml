@@ -11,8 +11,17 @@ matrix:
       env:
         - RELEASE=precise
     - os: osx
+      osx_image: xcode8.2
       env:
-        - RELEASE=mavericks
+        - RELEASE=sierra
+    - os: osx
+      osx_image: xcode7.3
+      env:
+        - RELEASE=sierra
+    - os: osx
+      osx_image: xcode6.4
+      env:
+        - RELEASE=yosemite
 
 env:
   global:
@@ -20,28 +29,34 @@ env:
     - ALIAS='nightly'
 
 install:
-  - pushd /opt/pyenv/
-  - sudo git checkout master
-  - sudo git pull
-  - popd
+- pushd /opt/pyenv/
+- sudo git checkout master
+- sudo git pull
+- popd
+- python -m pip install virtualenv
 
 before_script:
-  - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-  - export LSB_RELEASE=$(lsb_release -rs 2>/dev/null || sw_vers -productVersion | sed 's/^\([0-9][0-9]*.[0-9][0-9]*\).*/\1/')
-  - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || echo "osx") | tr "A-Z" "a-z")}'
-  - 'export ARCH=${ARCH:-$(uname -m)}'
-  - 'export PACKAGES=${PACKAGES:-pip numpy nose pytest mock wheel}'
+- 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
+- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
+- 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
+- 'export ARCH=${ARCH:-$(uname -m)}'
+- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel}'
+- 'export CPYTHON_ONLY_PKGS="numpy"'
+- export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
 
-script: ./build-python
+script: ./bin/compile
 
-after_success: ./create-archive
+after_success: ./bin/archive
 
-after_failure:
-  - cat /tmp/python-build.*.log
+after_failure: cat /tmp/python-build.*.log
 
 addons:
+  apt:
+    packages:
+      - openssl
   artifacts:
     paths:
     - $LSB_RELEASE/
     target_paths:
     - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
+

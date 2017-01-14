@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+if [[ ! $LSB_RELEASE ]] ; then
+  echo 'Missing LSB_RELEASE'
+  exit 1
+fi
+
+if [[ ! $INSTALL_DEST ]] ; then
+  echo 'Missing INSTALL_DEST'
+  exit 1
+fi
+
+if [[ ! $VERSION ]] ; then
+  echo 'Missing VERSION'
+  exit 1
+fi
+
+set -o xtrace
+
+: ${TAR_PATHS:=$INSTALL_DEST/$VERSION}
+: ${DESTS:=}
+
+if [[ $VERSION =~ ^python|pypy ]] ; then
+  VERSION="${VERSION}"
+  SHORT_VERSION="${VERSION}"
+else
+  SHORT_VERSION="python${VERSION}"
+  VERSION="python-${VERSION}"
+fi
+
+TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$VERSION $HOME/virtualenv/${SHORT_VERSION}"
+DESTS="$TRAVIS_BUILD_DIR/$LSB_RELEASE/${VERSION}.tar.bz2"
+
+if [[ $ALIAS ]] ; then
+  if [[ $ALIAS =~ ^python|pypy ]] ; then
+    SHORT_ALIAS="${ALIAS}"
+    LONG_ALIAS="${ALIAS}"
+  else
+    SHORT_ALIAS="python${ALIAS}"
+    LONG_ALIAS="python-${ALIAS}"
+  fi
+  TAR_PATHS="$TAR_PATHS $INSTALL_DEST/$ALIAS $HOME/virtualenv/${SHORT_ALIAS}"
+  DESTS="$DESTS $TRAVIS_BUILD_DIR/$LSB_RELEASE/${LONG_ALIAS}.tar.bz2"
+fi
+
+for DEST in $DESTS ; do
+  mkdir -p $(dirname $DEST)
+  tar -cjf $DEST $(ls -d $TAR_PATHS 2>/dev/null || true)
+
+  pushd $(dirname $DEST) &>/dev/null
+
+  shopt -s nullglob
+  for f in *.* ; do
+    sha256sum $f > ${f}.sha256sum.txt
+  done
+
+  popd &>/dev/null
+
+  echo "---> $DEST"
+done
