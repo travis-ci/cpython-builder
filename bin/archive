@@ -53,7 +53,11 @@ for DEST in $DESTS ; do
 
   shopt -s nullglob
   for f in *.* ; do
-    sha256sum $f > ${f}.sha256sum.txt
+    if command -v sha256sum; then
+      sha256sum $f > ${f}.sha256sum.txt
+    else
+      shasum -a 256 $f > ${f}.sha256sum.txt
+    fi
   done
 
   popd &>/dev/null
