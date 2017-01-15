@@ -1,4 +1,4 @@
-language: python
+language: c
 
 matrix:
   include:
@@ -8,20 +8,13 @@ matrix:
       env:
         - RELEASE=trusty
     - sudo: required
-      env:
-        - RELEASE=precise
+      env: RELEASE=precise
     - os: osx
       osx_image: xcode8.2
-      env:
-        - RELEASE=sierra
+      env: RELEASE=sierra
     - os: osx
       osx_image: xcode7.3
-      env:
-        - RELEASE=sierra
-    - os: osx
-      osx_image: xcode6.4
-      env:
-        - RELEASE=yosemite
+      env: RELEASE=elcapitan
 
 env:
   global:
@@ -29,11 +22,17 @@ env:
     - ALIAS='nightly'
 
 install:
-- pushd /opt/pyenv/
-- sudo git checkout master
-- sudo git pull
-- popd
-- python -m pip install virtualenv
+- |
+  if [[ "$(uname)" == "Linux" ]] ; then
+    pushd /opt/pyenv/
+    sudo git checkout master
+    sudo git pull
+    popd
+  else
+    brew uninstall pyenv
+    brew install pyenv --HEAD
+  fi
+- sudo -H python -m pip install virtualenv --upgrade
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
