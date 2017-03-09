@@ -13,9 +13,6 @@ if [[ ! $VERSION ]] ; then
 fi
 
 function install_numpy() {
-  if [[ $VERSION == pypy* ]]; then
-    $HOME/virtualenv/$VIRTENV_VERSION/bin/pypy -m ensurepip
-  fi
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade numpy
 }
 
@@ -55,5 +52,7 @@ if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
 fi
 
-install_numpy
+if [[ "${PYTHON_BIN}" = python ]]; then
+  install_numpy
+fi
 

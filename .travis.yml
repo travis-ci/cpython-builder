@@ -26,7 +26,6 @@ before_script:
 - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
 - 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel}'
-- 'export CPYTHON_ONLY_PKGS="numpy"'
 - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
 script: ./bin/compile
 
