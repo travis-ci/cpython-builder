@@ -43,7 +43,12 @@ virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/python \
 
 if [[ $ALIAS ]] ; then
   rm -f $HOME/virtualenv/python$ALIAS
-  ln -sf $HOME/virtualenv/$VIRTENV_VERSION $HOME/virtualenv/python$ALIAS
+  if [[ $ALIAS = pypy* ]]; then
+    VIRTENV_ALIAS=$ALIAS
+  else
+    VIRTENV_ALIAS=python$ALIAS
+  fi
+  ln -sf $HOME/virtualenv/$VIRTENV_VERSION $HOME/virtualenv/$VIRTENV_ALIAS
 fi
 
 $HOME/virtualenv/$VIRTENV_VERSION/bin/python -c "import sys; assert sys.maxunicode > 65535"
