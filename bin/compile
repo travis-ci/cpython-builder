@@ -27,11 +27,11 @@ if [[ $ALIAS ]] ; then
 fi
 
 # set up virtualenv arguments
-if [[ $VERSION = pypy-* ]]; then
-  PYTHON_BIN=pypy
-  VIRTENV_VERSION=$VERSION
-elif [[ $VERSION = pypy3* ]]; then
+if [[ $VERSION = pypy3* ]]; then
   PYTHON_BIN=pypy3
+  VIRTENV_VERSION=$VERSION
+elif [[ $VERSION = pypy* ]]; then
+  PYTHON_BIN=pypy
   VIRTENV_VERSION=$VERSION
 else
   PYTHON_BIN=python
@@ -42,12 +42,12 @@ virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/$PYTHON_BIN \
   $HOME/virtualenv/$VIRTENV_VERSION
 
 if [[ $ALIAS ]] ; then
-  rm -f $HOME/virtualenv/python$ALIAS
   if [[ $ALIAS = pypy* ]]; then
     VIRTENV_ALIAS=$ALIAS
   else
     VIRTENV_ALIAS=python$ALIAS
   fi
+  rm -f $HOME/virtualenv/$VIRTENV_ALIAS
   ln -sf $HOME/virtualenv/$VIRTENV_VERSION $HOME/virtualenv/$VIRTENV_ALIAS
 fi
 
