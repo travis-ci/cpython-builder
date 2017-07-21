@@ -37,6 +37,7 @@ before_script:
       sudo tar xf pypy*.tar.bz2 -C /
     fi
     source ~/virtualenv/pypy/bin/activate
+    python --version
   fi
 - __dots() { while true ; do echo -en . ; sleep 30 ; done } ; __dots &
 
