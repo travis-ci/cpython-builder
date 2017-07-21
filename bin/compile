@@ -14,6 +14,12 @@ fi
 
 # Use pypy when building pypy from source
 if [[ $VERSION = pypy*-dev ]]; then
+  if [[ -f ~/virtualenv/pypy/bin/activate ]]; then
+    :
+  else
+    curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
+    sudo tar xf pypy*.tar.bz2 -C /
+  fi
   source ~/virtualenv/pypy/bin/activate
 fi
 
