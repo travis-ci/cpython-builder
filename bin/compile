@@ -12,6 +12,11 @@ if [[ ! $VERSION ]] ; then
   exit 1
 fi
 
+# Use pypy when building pypy from source
+if [[ $VERSION = pypy*-dev ]]; then
+  source ~/virtualenv/pypy/bin/activate
+fi
+
 function install_numpy() {
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade numpy
 }
