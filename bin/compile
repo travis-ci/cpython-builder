@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -o errexit
+set -o verbose
 
 if [[ ! $INSTALL_DEST ]] ; then
   echo 'Missing INSTALL_DEST'
