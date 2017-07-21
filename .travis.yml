@@ -29,16 +29,15 @@ before_script:
 - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
 - sudo chown -R $USER $HOME/.cache
 - |
-if [[ $VERSION = pypy*-dev ]]; then
-  if [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-    :
-  else
-    curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
-    sudo tar xf pypy*.tar.bz2 -C /
+  if [[ $VERSION = pypy*-dev ]]; then
+    if [[ -f ~/virtualenv/pypy/bin/activate ]]; then
+      :
+    else
+      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
+      sudo tar xf pypy*.tar.bz2 -C /
+    fi
+    source ~/virtualenv/pypy/bin/activate
   fi
-  source ~/virtualenv/pypy/bin/activate
-fi
-
 - __dots() { while true ; do echo -en . ; sleep 30 ; done } ; __dots &
 
 script: ./bin/compile
