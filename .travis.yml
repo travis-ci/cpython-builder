@@ -27,6 +27,7 @@ before_script:
 - 'export ARCH=${ARCH:-$(uname -m)}'
 - 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel}'
 - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
+- sudo chown -R $USER $HOME/.cache
 - __dots() { while true ; do echo -en . ; sleep 30 ; done } ; __dots &
 
 script: ./bin/compile
