@@ -17,6 +17,17 @@ function install_numpy() {
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade numpy
 }
 
+function install_numpy_from_source() {
+  pushd $HOME/build
+  git clone https://github.com/numpy/numpy.git numpy/numpy
+  pushd numpy/numpy
+  $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install nose pytz cython
+  $HOME/virtualenv/$VIRTENV_VERSION/bin/python setup.py build
+  $HOME/virtualenv/$VIRTENV_VERSION/bin/python setup.py install
+  popd
+  popd
+}
+
 sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
   /opt/pyenv/plugins/python-build/bin/python-build $VERSION $INSTALL_DEST/$VERSION
 
@@ -58,7 +69,7 @@ fi
 
 if [[ "${PYTHON_BIN}" = python ]]; then
   if [[ "${ALIAS}" = nightly ]]; then
-     : # skip installing numpy until it is compatible
+    install_numpy_from_source
   else
     install_numpy
   fi
