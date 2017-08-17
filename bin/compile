@@ -57,6 +57,10 @@ if [[ $PACKAGES ]] ; then
 fi
 
 if [[ "${PYTHON_BIN}" = python ]]; then
-  install_numpy
+  if [[ "${ALIAS}" = nightly ]]; then
+     : # skip installing numpy until it is compatible
+  else
+    install_numpy
+  fi
 fi
 
