@@ -10,7 +10,7 @@ matrix:
 
 env:
   global:
-  - VERSION='pypy3.5-5.8.0'
+  - VERSION='pypy2.7-5.8.0'
 
 install:
 - pushd /opt/pyenv/
