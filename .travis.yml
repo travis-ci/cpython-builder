@@ -10,8 +10,7 @@ matrix:
 
 env:
   global:
-  - VERSION='3.7-dev'
-  - ALIAS=nightly
+  - VERSION='pypy3.5-5.8.0'
 
 install:
 - pushd /opt/pyenv/

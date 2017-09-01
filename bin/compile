@@ -67,11 +67,12 @@ if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
 fi
 
-if [[ "${PYTHON_BIN}" = python ]]; then
-  if [[ "${ALIAS}" = nightly ]]; then
-    install_numpy_from_source
-  else
-    install_numpy
+if [[ "${ALIAS}" = nightly ]]; then
+  install_numpy_from_source
+else
+  if [[ ${VERSION} == pypy* ]]; then
+    $HOME/virtualenv/$VIRTENV_VERSION/bin/${PYTHON_BIN} -m ensurepip
   fi
+  install_numpy
 fi
 
