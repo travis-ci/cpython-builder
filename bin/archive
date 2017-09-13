@@ -47,7 +47,7 @@ fi
 
 for DEST in $DESTS ; do
   mkdir -p $(dirname $DEST)
-  tar -cjf $DEST $(ls -d $TAR_PATHS 2>/dev/null | tee ${LONG_ALIAS:-VERSION}-filelist.txt || true)
+  tar -cjf $DEST $(ls -d $TAR_PATHS 2>/dev/null | tee ${LONG_ALIAS:-$VERSION}-filelist.txt || true)
 
   pushd $(dirname $DEST) &>/dev/null
 
