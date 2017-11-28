@@ -3,6 +3,11 @@ language: python
 matrix:
   include:
     - sudo: required
+      language: minimal
+      dist: xenial
+      group: edge
+      env: RELEASE=xenial
+    - sudo: required
       services: docker
       env: RELEASE=trusty
     - sudo: required
