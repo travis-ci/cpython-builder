@@ -62,3 +62,6 @@ addons:
     - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
     branch:
     - default
+
+notifications:
+  email: false
