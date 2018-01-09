@@ -11,6 +11,7 @@ matrix:
       services: docker
       env: RELEASE=trusty
     - sudo: required
+      dist: precise
       env: RELEASE=precise
 
 env:
