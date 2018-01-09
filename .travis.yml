@@ -1,6 +1,10 @@
 language: python
 
-matrix:
+stages:
+  - build
+stage: build
+
+jobs:
   include:
     - sudo: required
       language: minimal
@@ -13,6 +17,7 @@ matrix:
     - sudo: required
       dist: precise
       env: RELEASE=precise
+      if: NOT ( env(VERSION) =~ /^pypy/ )
 
 env:
   global:
