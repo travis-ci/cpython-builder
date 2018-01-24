@@ -22,8 +22,7 @@ function install_numpy_from_source() {
   git clone https://github.com/numpy/numpy.git numpy/numpy
   pushd numpy/numpy
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install nose pytz cython
-  $HOME/virtualenv/$VIRTENV_VERSION/bin/python setup.py build
-  $HOME/virtualenv/$VIRTENV_VERSION/bin/python setup.py install
+  $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install .
   popd
   popd
 }
