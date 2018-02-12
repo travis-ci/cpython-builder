@@ -47,7 +47,7 @@ fi
 
 for DEST in $DESTS ; do
   mkdir -p $(dirname $DEST)
-  tar -cjvf $DEST $(ls -d $TAR_PATHS 2>/dev/null || true) > $(dirname $DEST)/${LONG_ALIAS:-$VERSION}-filelist.txt
+  sudo tar -cjvf $DEST $(ls -d $TAR_PATHS 2>/dev/null || true) > $(dirname $DEST)/${LONG_ALIAS:-$VERSION}-filelist.txt
 
   pushd $(dirname $DEST) &>/dev/null
 
