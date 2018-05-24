@@ -14,7 +14,7 @@ jobs:
     - sudo: required
       services: docker
       env: RELEASE=trusty
-      if: NOT env(VERSION) =~ -dev$
+      if: NOT env(RELEASE) = trusty
     - sudo: required
       dist: precise
       env: RELEASE=precise
