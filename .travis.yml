@@ -14,11 +14,11 @@ jobs:
     - sudo: required
       services: docker
       env: RELEASE=trusty
-      if: env(VERSION) != 3.8-dev
+      if: env(VERSION) != 3.8-dev AND env(VERSION) != 3.7-dev
     - sudo: required
       dist: precise
       env: RELEASE=precise
-      if: env(VERSION) != 3.8-dev AND ( NOT env(VERSION) =~ ^pypy )
+      if: env(VERSION) != 3.8-dev AND env(VERSION) != 3.7-dev AND ( NOT env(VERSION) =~ ^pypy )
 
 env:
   global:
