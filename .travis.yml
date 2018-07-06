@@ -22,6 +22,7 @@ jobs:
     - sudo: required
       os: linux-ppc64le
       dist: xenial
+      env: RELEASE=xenial
 
 env:
   global:
