@@ -14,11 +14,14 @@ jobs:
     - sudo: required
       services: docker
       env: RELEASE=trusty
-      if: NOT env(VERSION) =~ -dev$
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
     - sudo: required
       dist: precise
       env: RELEASE=precise
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
+    - sudo: required
+      os: linux-ppc64le
+      dist: xenial
 
 env:
   global:
@@ -45,8 +48,8 @@ before_script:
     if [[ -f ~/virtualenv/pypy/bin/activate ]]; then
       :
     else
-      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
-      sudo tar xf pypy*.tar.bz2 -C /
+      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/$(uname -m)/pypy2.7-5.8.0.tar.bz2
+      $(printf %s%s su do) tar xf pypy*.tar.bz2 -C /
     fi
     source ~/virtualenv/pypy/bin/activate
     python --version
