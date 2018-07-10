@@ -26,7 +26,7 @@ jobs:
 
 env:
   global:
-  - VERSION=3.7
+  - VERSION=3.7.0
   # - ALIAS=nightly
 
 install:
