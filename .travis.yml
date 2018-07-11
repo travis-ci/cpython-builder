@@ -15,11 +15,11 @@ jobs:
       services: docker
       dist: trusty
       env: RELEASE=trusty
-      if: NOT env(VERSION) =~ -dev$
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
     - sudo: required
       dist: precise
       env: RELEASE=precise
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
 
 env:
   global:
