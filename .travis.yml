@@ -13,6 +13,7 @@ jobs:
       env: RELEASE=xenial
     - sudo: required
       services: docker
+      dist: trusty
       env: RELEASE=trusty
       if: NOT env(VERSION) =~ -dev$
     - sudo: required
@@ -22,7 +23,7 @@ jobs:
 
 env:
   global:
-  - VERSION=3.8-dev
+  - VERSION=3.7.0
   # - ALIAS=nightly
 
 install:
@@ -37,14 +38,13 @@ before_script:
 - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
 - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
-- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel}'
+# pipenv is supported for python 2.7 and 3.4 and higher.
+- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv}'
 - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
 - sudo chown -R $USER $HOME/.cache
 - |
   if [[ $VERSION = pypy*-dev ]]; then
-    if [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-      :
-    else
+    if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
       curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
       sudo tar xf pypy*.tar.bz2 -C /
     fi
