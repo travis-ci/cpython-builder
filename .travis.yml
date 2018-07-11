@@ -63,6 +63,7 @@ addons:
   apt:
     packages:
       - openssl
+      - libssl-dev
   artifacts:
     paths:
     - $LSB_RELEASE/
