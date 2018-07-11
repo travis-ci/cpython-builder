@@ -73,3 +73,9 @@ addons:
 
 notifications:
   email: false
+  slack:
+    rooms:
+      secure: "ZZb1XxoEiVqSUYTwQDxDLasQwVyF5s2FUoTI4Hcf66GGr50seBgWvcHpCkbtDbntluoyUB/s9MyuVAsIq/tIu+z2EQpKQN8PGZXYZEb2DzEkRbekyUx4MQufvY3mbIwv69SSs12uq90Ce2R3S+okPvbjCB7HzEufW9wvtl6TwME="
+    on_success: never
+    on_failure: always
+    on_pull_requests: false
