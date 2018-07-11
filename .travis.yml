@@ -13,17 +13,18 @@ jobs:
       env: RELEASE=xenial
     - sudo: required
       services: docker
+      dist: trusty
       env: RELEASE=trusty
-      if: NOT env(VERSION) =~ -dev$
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
     - sudo: required
       dist: precise
       env: RELEASE=precise
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
 
 env:
   global:
-  - VERSION=3.8-dev
-  # - ALIAS=nightly
+  - VERSION=pypy3-dev
+  - ALIAS=pypy3-nightly
 
 install:
 - pushd /opt/pyenv/
@@ -37,15 +38,14 @@ before_script:
 - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
 - 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
-- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel}'
+# pipenv is supported for python 2.7 and 3.4 and higher.
+- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv}'
 - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
 - sudo chown -R $USER $HOME/.cache
 - |
   if [[ $VERSION = pypy*-dev ]]; then
-    if [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-      :
-    else
-      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
+    if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
+      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
       sudo tar xf pypy*.tar.bz2 -C /
     fi
     source ~/virtualenv/pypy/bin/activate
@@ -63,6 +63,7 @@ addons:
   apt:
     packages:
       - openssl
+      - libssl-dev
   artifacts:
     paths:
     - $LSB_RELEASE/
@@ -73,3 +74,9 @@ addons:
 
 notifications:
   email: false
+  slack:
+    rooms:
+      secure: "ZZb1XxoEiVqSUYTwQDxDLasQwVyF5s2FUoTI4Hcf66GGr50seBgWvcHpCkbtDbntluoyUB/s9MyuVAsIq/tIu+z2EQpKQN8PGZXYZEb2DzEkRbekyUx4MQufvY3mbIwv69SSs12uq90Ce2R3S+okPvbjCB7HzEufW9wvtl6TwME="
+    on_success: never
+    on_failure: always
+    on_pull_requests: false
