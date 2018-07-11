@@ -23,8 +23,8 @@ jobs:
 
 env:
   global:
-  - VERSION=3.7.0
-  # - ALIAS=nightly
+  - VERSION=pypy3-dev
+  - ALIAS=pypy3-nightly
 
 install:
 - pushd /opt/pyenv/
@@ -45,7 +45,7 @@ before_script:
 - |
   if [[ $VERSION = pypy*-dev ]]; then
     if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.8.0.tar.bz2
+      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
       sudo tar xf pypy*.tar.bz2 -C /
     fi
     source ~/virtualenv/pypy/bin/activate
