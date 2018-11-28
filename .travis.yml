@@ -1,4 +1,4 @@
-language: python
+language: __sardonyx__
 
 stages:
   - build
@@ -12,19 +12,23 @@ jobs:
       group: edge
       env: RELEASE=xenial
     - sudo: required
-      services: docker
       dist: trusty
+      services: docker
       env: RELEASE=trusty
       if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
     - sudo: required
       dist: precise
       env: RELEASE=precise
       if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
+    - sudo: required
+      arch: ppc64le
+      dist: xenial
+      env: RELEASE=xenial
 
 env:
   global:
-  - VERSION=pypy3-dev
-  - ALIAS=pypy3-nightly
+  - VERSION=3.7.0
+  # - ALIAS=nightly
 
 install:
 - pushd /opt/pyenv/
