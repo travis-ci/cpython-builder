@@ -26,8 +26,8 @@ jobs:
 
 env:
   global:
-  - VERSION=2.7.15
-  - ALIAS=2.7
+  - VERSION=3.4.9
+  - ALIAS=3.4
 
 install:
 - pushd /opt/pyenv/
