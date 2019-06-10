@@ -54,9 +54,6 @@ for DEST in $DESTS ; do
   shopt -s nullglob
   for f in *.bz2; do
     sha256sum $f > ${f}.sha256sum.txt
-    command -v pip >/dev/null || (curl -sSO https://bootstrap.pypa.io/get-pip.py && python get-pip.py --user)
-    pip install --user --upgrade pip
-    aws s3 cp $f.* s3://travis-python-archives/binaries/$LSB_RELEASE/$OS_NAME/$ARCH/ --acl=public-read
   done
 
   popd &>/dev/null
