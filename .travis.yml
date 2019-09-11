@@ -1,4 +1,5 @@
 language: __sardonyx__
+os: linux
 
 stages:
   - build
