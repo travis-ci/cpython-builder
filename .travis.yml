@@ -9,21 +9,21 @@ jobs:
     - language: minimal
       dist: bionic
       group: dev
-      env: RELEASE=bionic
+      name: bionic
     - language: minimal
       dist: xenial
       group: edge
-      env: RELEASE=xenial
+      name: xenial
     - dist: trusty
       services: docker
-      env: RELEASE=trusty
+      name: trusty
       if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
     - dist: precise
-      env: RELEASE=precise
+      name: precise
       if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
     - arch: ppc64le
       dist: xenial
-      env: RELEASE=xenial
+      name: xenial-ppc64le
 
 env:
   global:
