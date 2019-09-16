@@ -1,5 +1,4 @@
 language: __sardonyx__
-os: linux
 
 stages:
   - build
@@ -11,20 +10,25 @@ jobs:
       dist: bionic
       group: dev
       name: bionic
+      os: linux
     - language: minimal
       dist: xenial
       group: edge
       name: xenial
+      os: linux
     - dist: trusty
       services: docker
       name: trusty
+      os: linux
       if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
     - dist: precise
       name: precise
+      os: linux
       if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
     - arch: ppc64le
       dist: xenial
       name: xenial-ppc64le
+      os: linux
 
 env:
   global:
