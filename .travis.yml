@@ -28,6 +28,18 @@ jobs:
       dist: xenial
       name: xenial-ppc64le
       os: linux
+    - arch: ppc64le
+      dist: bionic
+      name: bionic-ppc64le
+      os: linux
+    - arch: s390x
+      dist: xenial
+      name: xenial-ppc64le
+      os: linux
+    - arch: s390x
+      dist: bionic
+      name: bionic-ppc64le
+      os: linux
     - arch: arm64
       dist: xenial
       name: xenial-arm64
