@@ -28,6 +28,14 @@ jobs:
       dist: xenial
       name: xenial-ppc64le
       os: linux
+    - arch: arm64
+      dist: xenial
+      name: xenial-arm64
+      language: minimal
+    - arch: arm64
+      dist: bionic
+      name: bionic-arm64
+      language: minimal
 
 env:
   global:
