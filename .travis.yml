@@ -86,7 +86,7 @@ addons:
     target_paths:
     - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
     branch:
-    - default-arm64
+    - default
     cache_control: public
 
 notifications:
