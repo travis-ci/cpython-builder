@@ -96,6 +96,7 @@ addons:
     packages:
       - openssl
       - libssl-dev
+      - mercurial
   artifacts:
     paths:
     - $LSB_RELEASE/
