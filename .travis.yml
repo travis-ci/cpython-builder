@@ -7,6 +7,14 @@ stage: build
 jobs:
   include:
     - language: minimal
+      dist: freebsd
+      group: dev
+      name: freebsd
+      os: freebsd
+      addons:
+        apt:
+          packages: []
+    - language: minimal
       dist: bionic
       group: dev
       name: bionic
