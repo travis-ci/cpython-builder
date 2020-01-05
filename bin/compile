@@ -47,7 +47,7 @@ else
   VIRTENV_VERSION=python$VERSION
 fi
 
-virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/$PYTHON_BIN \
+virtualenv --python=$INSTALL_DEST/$VERSION/bin/$PYTHON_BIN \
   $HOME/virtualenv/$VIRTENV_VERSION
 
 if [[ $ALIAS ]] ; then
