@@ -63,7 +63,7 @@ install:
 - sudo git checkout master
 - sudo git pull
 - popd
-- python -m pip install --upgrade virtualenv
+- sudo python3 -m pip install --upgrade virtualenv
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
@@ -97,6 +97,7 @@ addons:
       - openssl
       - libssl-dev
       - mercurial
+      - python3-pip
   artifacts:
     paths:
     - $LSB_RELEASE/
