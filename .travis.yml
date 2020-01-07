@@ -36,12 +36,12 @@ jobs:
       language: minimal
     - arch: s390x
       dist: xenial
-      name: xenial-ppc64le
+      name: xenial-s390x
       os: linux
       language: minimal
     - arch: s390x
       dist: bionic
-      name: bionic-ppc64le
+      name: bionic-s390x
       os: linux
       language: minimal
     - arch: arm64
@@ -53,6 +53,9 @@ jobs:
       name: bionic-arm64
       language: minimal
 
+  allow_failures:
+    - name: xenial-arm64
+
 env:
   global:
   - VERSION=3.8-dev
@@ -63,7 +66,24 @@ install:
 - sudo git checkout master
 - sudo git pull
 - popd
-- sudo python3 -m pip install --upgrade virtualenv
+# As of this writing:
+# * Py2 is EOL
+#   * however, pip (https://pip.pypa.io/en/latest/development/release-process/#python-2-support) intends to keep supporting it as long as practical
+#   * Virtualenv also supports old versions (e.g. 3.4) far longer than PSF does
+# * selected images have `virtualenv` on PATH for stem Py2 preinstalled (installed with pip); for amd64 globally, for multiarch per user
+#   * this preinstalled `virtualenv` doesn't support 3.9+
+# * selected amd64 images have 3.7.* preinstalled with pip; multiarch have pyenv not on PATH, with no alt versions
+# * xenial's provided Py3, 3.5, is in security fixes mode, due for EOL in 06.2020
+#
+# So it seems to be safe to use the py2 preinstalled `virtualenv` if we update it, for the foreseeable future.
+# FIXME: use an officially supported alt Python version for `virtualenv` instead once one is available in all images.
+- |
+  # `cat` avoids "broken pipe"; `freeze` instead of `list` avoids a warning about future output format change
+  if (python -m pip freeze --user | cat | grep -qP '^virtualenv=='); then
+    python -m pip install --upgrade --user virtualenv
+  elif (python -m pip freeze | cat | grep -qP '^virtualenv=='); then
+    sudo python -m pip install --upgrade virtualenv
+  fi
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'

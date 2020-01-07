@@ -56,7 +56,7 @@ if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
 fi
 
-if ! [[ "${ALIAS}" == nightly || "${VERSION}" =~ '-dev$' ]]; then
+if ! [[ "${ALIAS}" == nightly || "${VERSION}" =~ -dev$ ]]; then
   if [[ ${VERSION} == pypy* ]]; then
     $HOME/virtualenv/$VIRTENV_VERSION/bin/${PYTHON_BIN} -m ensurepip
   fi
