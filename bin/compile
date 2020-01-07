@@ -17,18 +17,8 @@ function install_numpy() {
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade numpy
 }
 
-function install_numpy_from_source() {
-  pushd $HOME/build
-  git clone https://github.com/numpy/numpy.git numpy/numpy
-  pushd numpy/numpy
-  $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install nose pytz cython
-  $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install .
-  popd
-  popd
-}
-
 sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
-  /opt/pyenv/plugins/python-build/bin/python-build $VERSION $INSTALL_DEST/$VERSION
+  /opt/pyenv/plugins/python-build/bin/python-build --verbose $VERSION $INSTALL_DEST/$VERSION
 
 if [[ $ALIAS ]] ; then
   rm -f $INSTALL_DEST/$ALIAS
@@ -47,7 +37,7 @@ else
   VIRTENV_VERSION=python$VERSION
 fi
 
-virtualenv --distribute --python=$INSTALL_DEST/$VERSION/bin/$PYTHON_BIN \
+virtualenv --python=$INSTALL_DEST/$VERSION/bin/$PYTHON_BIN \
   $HOME/virtualenv/$VIRTENV_VERSION
 
 if [[ $ALIAS ]] ; then
@@ -66,9 +56,7 @@ if [[ $PACKAGES ]] ; then
   $HOME/virtualenv/$VIRTENV_VERSION/bin/pip install --upgrade $PACKAGES
 fi
 
-if [[ "${ALIAS}" = nightly ]]; then
-  install_numpy_from_source
-else
+if ! [[ "${ALIAS}" == nightly || "${VERSION}" =~ '-dev$' ]]; then
   if [[ ${VERSION} == pypy* ]]; then
     $HOME/virtualenv/$VIRTENV_VERSION/bin/${PYTHON_BIN} -m ensurepip
   fi
