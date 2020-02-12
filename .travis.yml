@@ -7,6 +7,11 @@ stage: build
 jobs:
   include:
     - language: minimal
+      dist: focal
+      group: dev
+      name: focal
+      os: linux
+    - language: minimal
       dist: bionic
       group: dev
       name: bionic
