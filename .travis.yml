@@ -11,52 +11,52 @@ jobs:
       name: freebsd
       os: freebsd
       group: dev
-#    - language: minimal
-#      dist: bionic
-#      group: dev
-#      name: bionic
-#      os: linux
-#    - language: minimal
-#      dist: xenial
-#      group: edge
-#      name: xenial
-#      os: linux
-#    - dist: trusty
-#      name: trusty
-#      os: linux
-#      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
-#    - dist: precise
-#      name: precise
-#      os: linux
-#      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
-#    - arch: ppc64le
-#      dist: xenial
-#      name: xenial-ppc64le
-#      os: linux
-#      language: minimal
-#    - arch: ppc64le
-#      dist: bionic
-#      name: bionic-ppc64le
-#      os: linux
-#      language: minimal
-#    - arch: s390x
-#      dist: xenial
-#      name: xenial-ppc64le
-#      os: linux
-#      language: minimal
-#    - arch: s390x
-#      dist: bionic
-#      name: bionic-ppc64le
-#      os: linux
-#      language: minimal
-#    - arch: arm64
-#      dist: xenial
-#      name: xenial-arm64
-#      language: minimal
-#    - arch: arm64
-#      dist: bionic
-#      name: bionic-arm64
-#      language: minimal
+    - language: minimal
+      dist: bionic
+      group: dev
+      name: bionic
+      os: linux
+    - language: minimal
+      dist: xenial
+      group: edge
+      name: xenial
+      os: linux
+    - dist: trusty
+      name: trusty
+      os: linux
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
+    - dist: precise
+      name: precise
+      os: linux
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
+    - arch: ppc64le
+      dist: xenial
+      name: xenial-ppc64le
+      os: linux
+      language: minimal
+    - arch: ppc64le
+      dist: bionic
+      name: bionic-ppc64le
+      os: linux
+      language: minimal
+    - arch: s390x
+      dist: xenial
+      name: xenial-ppc64le
+      os: linux
+      language: minimal
+    - arch: s390x
+      dist: bionic
+      name: bionic-ppc64le
+      os: linux
+      language: minimal
+    - arch: arm64
+      dist: xenial
+      name: xenial-arm64
+      language: minimal
+    - arch: arm64
+      dist: bionic
+      name: bionic-arm64
+      language: minimal
 
 env:
   global:
@@ -111,11 +111,11 @@ addons:
     - default
     cache_control: public
 
-#notifications:
-#  email: false
-#  slack:
-#    rooms:
-#      secure: "ZZb1XxoEiVqSUYTwQDxDLasQwVyF5s2FUoTI4Hcf66GGr50seBgWvcHpCkbtDbntluoyUB/s9MyuVAsIq/tIu+z2EQpKQN8PGZXYZEb2DzEkRbekyUx4MQufvY3mbIwv69SSs12uq90Ce2R3S+okPvbjCB7HzEufW9wvtl6TwME="
-#    on_success: never
-#    on_failure: always
-#    on_pull_requests: false
+notifications:
+  email: false
+  slack:
+    rooms:
+      secure: "ZZb1XxoEiVqSUYTwQDxDLasQwVyF5s2FUoTI4Hcf66GGr50seBgWvcHpCkbtDbntluoyUB/s9MyuVAsIq/tIu+z2EQpKQN8PGZXYZEb2DzEkRbekyUx4MQufvY3mbIwv69SSs12uq90Ce2R3S+okPvbjCB7HzEufW9wvtl6TwME="
+    on_success: never
+    on_failure: always
+    on_pull_requests: false
