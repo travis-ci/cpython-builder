@@ -65,6 +65,7 @@ jobs:
 
   allow_failures:
     - name: xenial-arm64
+    - name: freebsd
 
 env:
   global:
