@@ -107,8 +107,6 @@ addons:
     - $LSB_RELEASE/
     target_paths:
     - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
-    branch:
-    - default
     cache_control: public
 
 notifications:
