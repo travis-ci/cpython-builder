@@ -118,7 +118,9 @@ before_script:
   fi
 - __dots() { while true ; do echo -en . ; sleep 30 ; done } ; __dots &
 
-script: ./bin/compile
+script:
+- __dots() { while true ; do echo -en . ; sleep 1 ; done } ; __dots &
+- ./bin/compile > /dev/null 2>&1
 
 after_success: ./bin/archive
 
