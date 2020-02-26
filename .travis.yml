@@ -72,7 +72,7 @@ install:
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
+- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
 - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c 5-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
 # pipenv is supported for python 2.7 and 3.4 and higher.
