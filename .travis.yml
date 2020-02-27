@@ -11,6 +11,12 @@ jobs:
       name: freebsd
       os: freebsd
       group: dev
+      install:
+      - pushd /opt/pyenv/
+      - sudo git checkout master
+      - sudo git pull
+      - popd
+      - sudo python -m pip install virtualenv==20.0.2
       script:
         - __dots() { while true ; do echo -en . ; sleep 1 ; done } ; __dots &
         - export LSB_RELEASE="12.0"
