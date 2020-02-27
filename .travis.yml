@@ -17,10 +17,6 @@ jobs:
       - sudo git pull
       - popd
       - sudo python -m pip install virtualenv==20.0.2
-      script:
-        - __dots() { while true ; do echo -en . ; sleep 1 ; done } ; __dots &
-        - export LSB_RELEASE="12.0"
-        - ./bin/compile > /dev/null 2>&1
     - language: minimal
       dist: focal
       group: dev
@@ -126,7 +122,6 @@ before_script:
     source ~/virtualenv/pypy/bin/activate
     python --version
   fi
-- __dots() { while true ; do echo -en . ; sleep 30 ; done } ; __dots &
 
 script: ./bin/compile
 
