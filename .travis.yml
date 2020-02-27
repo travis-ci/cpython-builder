@@ -11,6 +11,9 @@ jobs:
       name: freebsd
       os: freebsd
       group: dev
+      script:
+        - __dots() { while true ; do echo -en . ; sleep 1 ; done } ; __dots &
+        - ./bin/compile > /dev/null 2>&1
     - language: minimal
       dist: focal
       group: dev
