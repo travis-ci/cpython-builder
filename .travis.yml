@@ -6,6 +6,15 @@ stage: build
 
 jobs:
   include:
+    - language: bash
+      dist: freebsd
+      name: freebsd
+      os: freebsd
+      group: dev
+      script:
+        - __dots() { while true ; do echo -en . ; sleep 1 ; done } ; __dots &
+        - export LSB_RELEASE="12.0"
+        - ./bin/compile > /dev/null 2>&1
     - language: minimal
       dist: focal
       group: dev
@@ -60,6 +69,7 @@ jobs:
 
   allow_failures:
     - name: xenial-arm64
+    - name: freebsd
 
 env:
   global:
@@ -94,8 +104,8 @@ install:
 
 before_script:
 - 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || echo ${$(sw_vers -productVersion)%*.*})}'
-- 'export OS_NAME=${OS_NAME:-$(lsb_release -is | tr "A-Z" "a-z" || echo "osx")}'
+- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
+- 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
 - 'export ARCH=${ARCH:-$(uname -m)}'
 # pipenv is supported for python 2.7 and 3.4 and higher.
 - 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv}'
