@@ -13,6 +13,7 @@ jobs:
       group: dev
       script:
         - __dots() { while true ; do echo -en . ; sleep 1 ; done } ; __dots &
+        - export LSB_RELEASE="12.0"
         - ./bin/compile > /dev/null 2>&1
     - language: minimal
       dist: focal
