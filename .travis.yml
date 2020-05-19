@@ -17,18 +17,11 @@ jobs:
       - sudo git pull
       - popd
       - sudo python -m pip install virtualenv==20.0.2
-    - language: minimal
+    - language: ruby
       dist: focal
       group: edge
       name: focal
       os: linux
-      install:
-       - pushd /opt/pyenv/
-       - sudo git checkout master
-       - sudo git pull
-       - popd
-       - sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm
-       - sudo python -m pip install virtualenv==20.0.2
     - language: minimal
       dist: bionic
       group: dev
