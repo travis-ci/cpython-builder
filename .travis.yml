@@ -35,11 +35,11 @@ jobs:
     - dist: trusty
       name: trusty
       os: linux
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.[789]
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^3\.([789]|1\d+)
     - dist: precise
       name: precise
       os: linux
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.[789]
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ ^3\.([789]|1\d+)
     - arch: ppc64le
       dist: xenial
       name: xenial-ppc64le
