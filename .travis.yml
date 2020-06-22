@@ -68,6 +68,10 @@ jobs:
       dist: bionic
       name: bionic-arm64
       language: minimal
+    - arch: arm64
+      dist: focal
+      name: bionic-arm64
+      language: minimal
 
   allow_failures:
     - name: xenial-arm64
