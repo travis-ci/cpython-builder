@@ -50,6 +50,10 @@ jobs:
       name: bionic-ppc64le
       os: linux
       language: minimal
+    - arch: ppc64le
+      dist: focal
+      name: focal-ppc64le
+      os: linux
     - arch: s390x
       dist: xenial
       name: xenial-s390x
@@ -60,6 +64,10 @@ jobs:
       name: bionic-s390x
       os: linux
       language: minimal
+    - arch: s390x
+      dist: focal
+      name: focal-s390x
+      os: linux
     - arch: arm64
       dist: xenial
       name: xenial-arm64
