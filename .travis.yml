@@ -68,6 +68,7 @@ jobs:
       dist: focal
       name: focal-s390x
       os: linux
+      language: minimal
     - arch: arm64
       dist: xenial
       name: xenial-arm64
