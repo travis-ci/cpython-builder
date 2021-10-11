@@ -90,6 +90,10 @@ env:
   - VERSION=3.8-dev
   # - ALIAS=nightly
 
+# Workaround for Let's Encrypt certificate issue, may be removed later.
+before_install:
+  - sudo apt update && sudo apt install libgnutls-openssl27 libgnutls30
+
 install:
 - pushd /opt/pyenv/
 - sudo git checkout master
