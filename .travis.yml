@@ -92,7 +92,8 @@ env:
 
 # Workaround for Let's Encrypt certificate issue, may be removed later.
 before_install:
-  - sudo apt update && sudo apt install libgnutls-openssl27 libgnutls30
+  - sudo sed 's/mozilla.DST_Root_CA_X3.crt/!mozilla\/DST_Root_CA_X3.crt/' -i /etc/ca-certificates.conf
+  - sudo update-ca-certificates
 
 install:
 - pushd /opt/pyenv/
