@@ -7,7 +7,6 @@ stage: build
 jobs:
   include:
     - language: bash
-      dist: freebsd
       name: freebsd
       os: freebsd
       group: dev
