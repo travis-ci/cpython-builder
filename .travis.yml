@@ -11,11 +11,12 @@ jobs:
       os: freebsd
       group: dev
       install:
-      - pushd /opt/pyenv/
-      - sudo git checkout master
-      - sudo git pull
-      - popd
-      - sudo python -m pip install virtualenv==20.0.2
+        - pushd /opt/pyenv/
+        - sudo git config --global --add safe.directory /opt/pyenv
+        - sudo git checkout master
+        - sudo git pull
+        - popd
+        - sudo python -m pip install virtualenv==20.0.2
     - language: ruby
       dist: focal
       group: edge
@@ -86,53 +87,54 @@ jobs:
 
 env:
   global:
-  - VERSION=3.8-dev
+    - VERSION=3.8-dev
   # - ALIAS=nightly
 
 install:
-- pushd /opt/pyenv/
-- sudo git checkout master
-- sudo git pull
-- popd
-# As of this writing:
-# * Py2 is EOL
-#   * however, pip (https://pip.pypa.io/en/latest/development/release-process/#python-2-support) intends to keep supporting it as long as practical
-#   * Virtualenv also supports old versions (e.g. 3.4) far longer than PSF does
-# * all images have `virtualenv` on PATH but vary in whether it's per-user or global and which Python installation it belongs to
-#   * some of these preinstalled `virtualenv`s don't support 3.9+
-# * selected amd64 images have 3.7.* preinstalled with pip; multiarch have pyenv not on PATH, with no alt versions
-# * xenial's provided Py3, 3.5, is in security fixes mode, due for EOL in 06.2020
-#
-# So it seems to be safe to use `virtualenv` with system's Py2 if we update it, for the foreseeable future.
-# FIXME: use an officially supported alt Python version for `virtualenv` instead once one is available in all images.
-- |
-  # `cat` avoids "broken pipe"; `freeze` instead of `list` avoids a warning about future output format change
-  if (python -m pip freeze --user | cat | grep -qP '^virtualenv=='); then
-    python -m pip install --upgrade --user virtualenv
-  elif (python -m pip freeze | cat | grep -qP '^virtualenv=='); then
-    sudo python -m pip install --upgrade virtualenv
-  else
-    sudo python -m pip install virtualenv
-  fi
+  - pushd /opt/pyenv/
+  - sudo git config --global --add safe.directory /opt/pyenv
+  - sudo git checkout master
+  - sudo git pull
+  - popd
+  # As of this writing:
+  # * Py2 is EOL
+  #   * however, pip (https://pip.pypa.io/en/latest/development/release-process/#python-2-support) intends to keep supporting it as long as practical
+  #   * Virtualenv also supports old versions (e.g. 3.4) far longer than PSF does
+  # * all images have `virtualenv` on PATH but vary in whether it's per-user or global and which Python installation it belongs to
+  #   * some of these preinstalled `virtualenv`s don't support 3.9+
+  # * selected amd64 images have 3.7.* preinstalled with pip; multiarch have pyenv not on PATH, with no alt versions
+  # * xenial's provided Py3, 3.5, is in security fixes mode, due for EOL in 06.2020
+  #
+  # So it seems to be safe to use `virtualenv` with system's Py2 if we update it, for the foreseeable future.
+  # FIXME: use an officially supported alt Python version for `virtualenv` instead once one is available in all images.
+  - |
+    # `cat` avoids "broken pipe"; `freeze` instead of `list` avoids a warning about future output format change
+    if (python -m pip freeze --user | cat | grep -qP '^virtualenv=='); then
+      python -m pip install --upgrade --user virtualenv
+    elif (python -m pip freeze | cat | grep -qP '^virtualenv=='); then
+      sudo python -m pip install --upgrade virtualenv
+    else
+      sudo python -m pip install virtualenv
+    fi
 
 before_script:
-- 'export INSTALL_DEST=${INSTALL_DEST:-/opt/python}'
-- 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
-- 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
-- 'export ARCH=${ARCH:-$(uname -m)}'
-# pipenv is supported for python 2.7 and 3.4 and higher.
-- 'export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv}'
-- export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
-- sudo chown -R $USER $HOME/.cache
-- |
-  if [[ $VERSION = pypy*-dev ]]; then
-    if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-      curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
-      sudo tar xf pypy*.tar.bz2 -C /
+  - "export INSTALL_DEST=${INSTALL_DEST:-/opt/python}"
+  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
+  - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
+  - "export ARCH=${ARCH:-$(uname -m)}"
+  # pipenv is supported for python 2.7 and 3.4 and higher.
+  - "export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv}"
+  - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
+  - sudo chown -R $USER $HOME/.cache
+  - |
+    if [[ $VERSION = pypy*-dev ]]; then
+      if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
+        curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
+        sudo tar xf pypy*.tar.bz2 -C /
+      fi
+      source ~/virtualenv/pypy/bin/activate
+      python --version
     fi
-    source ~/virtualenv/pypy/bin/activate
-    python --version
-  fi
 
 script: ./bin/compile
 
@@ -149,11 +151,11 @@ addons:
       - python3-pip
   artifacts:
     paths:
-    - $LSB_RELEASE/
+      - $LSB_RELEASE/
     target_paths:
-    - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
+      - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
     branch:
-    - default
+      - default
     cache_control: public
 
 notifications:
