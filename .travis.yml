@@ -17,6 +17,11 @@ jobs:
         - sudo git pull
         - popd
         - sudo python -m pip install virtualenv==20.0.2
+    - language: minimal
+      dist: jammy
+      group: dev
+      name: jammy
+      os: linux
     - language: ruby
       dist: focal
       group: edge
