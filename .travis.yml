@@ -19,7 +19,7 @@ jobs:
         - sudo python -m pip install virtualenv==20.0.2
     - language: minimal
       dist: jammy
-      group: dev
+      group: edge
       name: jammy
       os: linux
     - language: ruby
