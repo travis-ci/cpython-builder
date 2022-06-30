@@ -128,7 +128,7 @@ before_script:
   - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
   - "export ARCH=${ARCH:-$(uname -m)}"
   # pipenv is supported for python 2.7 and 3.4 and higher.
-  - "export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv}"
+  - "export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv dataclasses}"
   - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
   - sudo chown -R $USER $HOME/.cache
   - |
