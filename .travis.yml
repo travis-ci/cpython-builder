@@ -8,7 +8,8 @@ jobs:
   include:
     - language: minimal
       name: rhel8
-      os: rhel8
+      os: linux
+      dist: rhel8
 
   allow_failures:
     - name: freebsd
