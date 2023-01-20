@@ -119,7 +119,7 @@ install:
     elif (python -m pip freeze | cat | grep -qP '^virtualenv=='); then
       sudo python -m pip install --upgrade virtualenv
     else
-      sudo python -m pip install virtualenv
+      sudo python -m pip install virtualenv==20.0.2
     fi
 
 before_script:
