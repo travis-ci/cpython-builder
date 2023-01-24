@@ -16,17 +16,26 @@ jobs:
         - sudo git checkout master
         - sudo git pull
         - popd
+        - python --version
         - sudo python -m pip install virtualenv==20.0.2
+        - apt list --installed
     - language: minimal
       dist: jammy
       group: edge
       name: jammy
       os: linux
-    - language: ruby
+    - language: minimal
       dist: focal
       group: edge
       name: focal
       os: linux
+      install:
+        - pushd /opt/pyenv/
+        - sudo git config --global --add safe.directory /opt/pyenv
+        - sudo git checkout master
+        - sudo git pull
+        - popd
+        - sudo python -m pip install virtualenv==20.0.2      
     - language: minimal
       dist: bionic
       group: dev
@@ -119,7 +128,7 @@ install:
     elif (python -m pip freeze | cat | grep -qP '^virtualenv=='); then
       sudo python -m pip install --upgrade virtualenv
     else
-      sudo python -m pip install virtualenv==20.0.2
+      sudo python -m pip install virtualenv
     fi
 
 before_script:
