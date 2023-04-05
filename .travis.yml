@@ -28,14 +28,7 @@ jobs:
       dist: focal
       group: edge
       name: focal
-      os: linux
-      install:
-        - pushd /opt/pyenv/
-        - sudo git config --global --add safe.directory /opt/pyenv
-        - sudo git checkout master
-        - sudo git pull
-        - popd
-        - sudo python -m pip install virtualenv==20.0.2      
+      os: linux   
     - language: minimal
       dist: bionic
       group: dev
