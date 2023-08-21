@@ -88,6 +88,10 @@ jobs:
       dist: focal
       name: focal-arm64
       language: minimal
+    - arch: arm64
+      dist: jammy
+      name: jammy-arm64
+      language: minimal
 
   allow_failures:
     - name: freebsd
