@@ -61,6 +61,10 @@ jobs:
       dist: focal
       name: focal-ppc64le
       os: linux
+    - arch: ppc64le
+      dist: jammy
+      name: jammy-ppc64le
+      os: linux      
     - arch: s390x
       dist: xenial
       name: xenial-s390x
