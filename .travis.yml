@@ -152,7 +152,7 @@ before_script:
       python --version
     fi
 
-script: sudo chmod +x ./bin/compile && sudo ./bin/compile
+script: ./bin/compile
 
 after_success: ./bin/archive
 
