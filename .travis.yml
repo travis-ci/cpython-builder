@@ -1,4 +1,4 @@
-language: __sardonyx__
+language: shell
 
 stages:
   - build
