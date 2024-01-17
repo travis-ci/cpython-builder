@@ -19,24 +19,20 @@ jobs:
         - python --version
         - sudo python -m pip install virtualenv==20.0.2
         - apt list --installed
-    - language: minimal
-      dist: jammy
-      group: edge
+    - dist: jammy
+      group: stable
       name: jammy
       os: linux
-    - language: minimal
-      dist: focal
-      group: edge
+    - dist: focal
+      group: stable
       name: focal
       os: linux   
-    - language: minimal
-      dist: bionic
-      group: dev
+    - dist: bionic
+      group: stable
       name: bionic
       os: linux
-    - language: minimal
-      dist: xenial
-      group: edge
+    - dist: xenial
+      group: stable
       name: xenial
       os: linux
     - dist: trusty
