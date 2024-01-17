@@ -21,7 +21,7 @@ sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
   /opt/pyenv/plugins/python-build/bin/python-build --verbose $VERSION $INSTALL_DEST/$VERSION
 
 if [[ $ALIAS ]] ; then
-  rm -rf $INSTALL_DEST/$ALIAS
+  sudo rm -rf $INSTALL_DEST/$ALIAS
   sudo ln -sf $INSTALL_DEST/$VERSION $INSTALL_DEST/$ALIAS
 fi
 
