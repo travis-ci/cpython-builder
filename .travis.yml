@@ -20,22 +20,26 @@ jobs:
         - sudo python -m pip install virtualenv==20.0.2
         - apt list --installed
     - dist: jammy
-      language: shell
+      env:
+        - RELEASE=jammy
       group: stable
       name: jammy
       os: linux
     - dist: focal
-      language: shell
+      env:
+        - RELEASE=focal
       group: stable
       name: focal
       os: linux   
     - dist: bionic
-      language: shell
+      env:
+        - RELEASE=bionic
       group: stable
       name: bionic
       os: linux
     - dist: xenial
-      language: shell
+      env:
+        - RELEASE=xenial
       group: stable
       name: xenial
       os: linux
