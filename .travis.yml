@@ -23,62 +23,49 @@ jobs:
       env:
         - RELEASE=jammy
       name: jammy
-      os: linux
     - dist: focal
       env:
         - RELEASE=focal
-      name: focal
-      os: linux   
+      name: focal   
     - dist: bionic
       env:
         - RELEASE=bionic
       name: bionic
-      os: linux
     - dist: xenial
       env:
         - RELEASE=xenial
       name: xenial
-      os: linux
     # - dist: trusty
     #   name: trusty
-    #   os: linux
     #   if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
     # - dist: precise
     #   name: precise
-    #   os: linux
     #   if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
     # - arch: ppc64le
     #   dist: xenial
     #   name: xenial-ppc64le
-    #   os: linux
     #   language: minimal
     # - arch: ppc64le
     #   dist: bionic
     #   name: bionic-ppc64le
-    #   os: linux
     #   language: minimal
     # - arch: ppc64le
     #   dist: focal
     #   name: focal-ppc64le
-    #   os: linux
     # - arch: ppc64le
     #   dist: jammy
-    #   name: jammy-ppc64le
-    #   os: linux      
+    #   name: jammy-ppc64le 
     # - arch: s390x
     #   dist: xenial
-    #   name: xenial-s390x
-    #   os: linux
+    #   name: xenial-s390x 
     #   language: minimal
     # - arch: s390x
     #   dist: bionic
-    #   name: bionic-s390x
-    #   os: linux
+    #   name: bionic-s390x  
     #   language: minimal
     # - arch: s390x
     #   dist: focal
-    #   name: focal-s390x
-    #   os: linux
+    #   name: focal-s390x   
     #   language: minimal
     # - arch: arm64
     #   dist: xenial
@@ -111,7 +98,7 @@ install:
   - sudo git checkout master
   - sudo git pull
   - popd
-  - if [[== "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
+  - if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
   - alias python=python3
   # As of this writing:
   # * Py2 is EOL
@@ -136,8 +123,8 @@ install:
 
 before_script:
   - "export INSTALL_DEST=${INSTALL_DEST:-/opt/python}"
-  - 'expo| if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
-  - 'export OS_NAME=${OS_NAME:-| if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
+  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
+  - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
   - "export ARCH=${ARCH:-$(uname -m)}"
   # pipenv is supported for python 2.7 and 3.4 and higher.
   - "export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv dataclasses}"
@@ -146,7 +133,7 @@ before_script:
   - |
     if [[ $VERSION = pypy*-dev ]]; then
       if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-        curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntux86_64/pypy2.7-5.9.0.tar.bz2
+        curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
         sudo tar xf pypy*.tar.bz2 -C /
       fi
       source ~/virtualenv/pypy/bin/activate
@@ -168,8 +155,9 @@ addons:
       - python3-pip
   artifacts:
     paths:
-      target_paths:
-      - /binaries/$OS_NAM
+      - $LSB_RELEASE/
+    target_paths:
+      - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
     branch:
       - default
     cache_control: public
