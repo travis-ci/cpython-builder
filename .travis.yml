@@ -22,25 +22,21 @@ jobs:
     - dist: jammy
       env:
         - RELEASE=jammy
-      group: stable
       name: jammy
       os: linux
     - dist: focal
       env:
         - RELEASE=focal
-      group: stable
       name: focal
       os: linux   
     - dist: bionic
       env:
         - RELEASE=bionic
-      group: stable
       name: bionic
       os: linux
     - dist: xenial
       env:
         - RELEASE=xenial
-      group: stable
       name: xenial
       os: linux
     # - dist: trusty
@@ -106,7 +102,7 @@ jobs:
 
 env:
   global:
-    - VERSION=3.8-dev
+    - VERSION=3.9-dev
   # - ALIAS=nightly
 
 install:
@@ -115,11 +111,11 @@ install:
   - sudo git checkout master
   - sudo git pull
   - popd
-  - if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
+  - if [[== "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
   - alias python=python3
   # As of this writing:
   # * Py2 is EOL
-  #   * however, pip (https://pip.pypa.io/en/latest/development/release-process/#python-2-support) intends to keep supporting it as long as practical
+  #   * however, pip (https://pip.pypa.io/en/latest/develss/#python-2-support) intends to keep supporting it as long as practical
   #   * Virtualenv also supports old versions (e.g. 3.4) far longer than PSF does
   # * all images have `virtualenv` on PATH but vary in whether it's per-user or global and which Python installation it belongs to
   #   * some of these preinstalled `virtualenv`s don't support 3.9+
@@ -140,8 +136,8 @@ install:
 
 before_script:
   - "export INSTALL_DEST=${INSTALL_DEST:-/opt/python}"
-  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
-  - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
+  - 'expo| if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
+  - 'export OS_NAME=${OS_NAME:-| if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
   - "export ARCH=${ARCH:-$(uname -m)}"
   # pipenv is supported for python 2.7 and 3.4 and higher.
   - "export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv dataclasses}"
@@ -150,7 +146,7 @@ before_script:
   - |
     if [[ $VERSION = pypy*-dev ]]; then
       if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-        curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
+        curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntux86_64/pypy2.7-5.9.0.tar.bz2
         sudo tar xf pypy*.tar.bz2 -C /
       fi
       source ~/virtualenv/pypy/bin/activate
@@ -172,9 +168,8 @@ addons:
       - python3-pip
   artifacts:
     paths:
-      - $LSB_RELEASE/
-    target_paths:
-      - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
+      target_paths:
+      - /binaries/$OS_NAM
     branch:
       - default
     cache_control: public
