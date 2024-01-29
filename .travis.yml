@@ -91,6 +91,7 @@ install:
   - sudo git checkout master
   - sudo git pull
   - popd
+  - alias python=python3
   - sudo pip install --upgrade pip
   - sudo pip install setuptools
   #- if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
