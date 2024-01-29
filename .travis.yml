@@ -168,8 +168,3 @@ notifications:
     on_success: never
     on_failure: always
     on_pull_requests: false
-
-
-setuptools
-pip install --upgrade pip
-python -m pip install --upgrade pip
