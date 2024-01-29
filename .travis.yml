@@ -99,7 +99,7 @@ install:
   - sudo git pull
   - popd
   - if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
-  - alias python=python3
+  #- alias python=python3
   # As of this writing:
   # * Py2 is EOL
   #   * however, pip (https://pip.pypa.io/en/latest/develss/#python-2-support) intends to keep supporting it as long as practical
