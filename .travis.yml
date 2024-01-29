@@ -34,55 +34,57 @@ jobs:
     - dist: xenial
       env:
         - RELEASE=xenial
+      script:
+        - sudo apt-get update && sudo apt-get install libssl-dev -y
       name: xenial
-    # - dist: trusty
-    #   name: trusty
-    #   if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
-    # - dist: precise
-    #   name: precise
-    #   if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
-    # - arch: ppc64le
-    #   dist: xenial
-    #   name: xenial-ppc64le
-    #   language: minimal
-    # - arch: ppc64le
-    #   dist: bionic
-    #   name: bionic-ppc64le
-    #   language: minimal
-    # - arch: ppc64le
-    #   dist: focal
-    #   name: focal-ppc64le
-    # - arch: ppc64le
-    #   dist: jammy
-    #   name: jammy-ppc64le 
-    # - arch: s390x
-    #   dist: xenial
-    #   name: xenial-s390x 
-    #   language: minimal
-    # - arch: s390x
-    #   dist: bionic
-    #   name: bionic-s390x  
-    #   language: minimal
-    # - arch: s390x
-    #   dist: focal
-    #   name: focal-s390x   
-    #   language: minimal
-    # - arch: arm64
-    #   dist: xenial
-    #   name: xenial-arm64
-    #   language: minimal
-    # - arch: arm64
-    #   dist: bionic
-    #   name: bionic-arm64
-    #   language: minimal
-    # - arch: arm64
-    #   dist: focal
-    #   name: focal-arm64
-    #   language: minimal
-    # - arch: arm64
-    #   dist: jammy
-    #   name: jammy-arm64
-    #   language: minimal
+    - dist: trusty
+      name: trusty
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
+    - dist: precise
+      name: precise
+      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
+    - arch: ppc64le
+      dist: xenial
+      name: xenial-ppc64le
+      language: minimal
+    - arch: ppc64le
+      dist: bionic
+      name: bionic-ppc64le
+      language: minimal
+    - arch: ppc64le
+      dist: focal
+      name: focal-ppc64le
+    - arch: ppc64le
+      dist: jammy
+      name: jammy-ppc64le 
+    - arch: s390x
+      dist: xenial
+      name: xenial-s390x 
+      language: minimal
+    - arch: s390x
+      dist: bionic
+      name: bionic-s390x  
+      language: minimal
+    - arch: s390x
+      dist: focal
+      name: focal-s390x   
+      language: minimal
+    - arch: arm64
+      dist: xenial
+      name: xenial-arm64
+      language: minimal
+    - arch: arm64
+      dist: bionic
+      name: bionic-arm64
+      language: minimal
+    - arch: arm64
+      dist: focal
+      name: focal-arm64
+      language: minimal
+    - arch: arm64
+      dist: jammy
+      name: jammy-arm64
+      language: minimal
 
   allow_failures:
     - name: freebsd
@@ -99,7 +101,6 @@ install:
   - sudo git pull
   - popd
   - if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
-  #- alias python=python3
   # As of this writing:
   # * Py2 is EOL
   #   * however, pip (https://pip.pypa.io/en/latest/develss/#python-2-support) intends to keep supporting it as long as practical
