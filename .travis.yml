@@ -46,13 +46,9 @@ jobs:
     - arch: ppc64le
       dist: xenial
       name: xenial-ppc64le
-      script:
-        - pip install --upgrade pip
     - arch: ppc64le
       dist: bionic
       name: bionic-ppc64le
-      script:
-        - pip install setuptools
     - arch: ppc64le
       dist: focal
       name: focal-ppc64le
@@ -62,8 +58,6 @@ jobs:
     - arch: s390x
       dist: xenial
       name: xenial-s390x
-      script:
-        - pip install --upgrade pip
     - arch: s390x
       dist: bionic
       name: bionic-s390x  
@@ -97,6 +91,8 @@ install:
   - sudo git checkout master
   - sudo git pull
   - popd
+  - pip install --upgrade pip
+  - pip install setuptools
   #- if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
   # As of this writing:
   # * Py2 is EOL
