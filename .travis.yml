@@ -86,6 +86,7 @@ env:
   # - ALIAS=nightly
 
 install:
+  - pyenv update
   - pushd /opt/pyenv/
   - sudo git config --global --add safe.directory /opt/pyenv
   - sudo git checkout master
