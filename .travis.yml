@@ -36,6 +36,7 @@ jobs:
         - RELEASE=xenial
       script:
         - sudo apt-get update && sudo apt-get install libssl-dev -y
+        - ./bin/compile
       name: xenial
     - dist: trusty
       name: trusty
