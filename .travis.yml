@@ -112,8 +112,8 @@ install:
   - sudo git checkout master
   - sudo git pull
   - popd
-  - sudo alias python=python3
-  - sudo python -m pip install virtualenv
+  - alias python=python3
+  - python -m pip install virtualenv
   - sudo pip install --upgrade pip
   - sudo pip install setuptools
   #- if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
