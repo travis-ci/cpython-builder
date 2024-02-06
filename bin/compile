@@ -42,7 +42,7 @@ fi
 # 20.0.2+ copies by default instead but the devs plan to change that back sometime.
 # 'pip' seeder is the old behavior and is not planned for deprecation in the foreseeable future
 # (https://github.com/pypa/virtualenv/issues/1576#issuecomment-584769625).
-pip install virtualenv
+sudo -H pip install virtualenv
 python -m virtualenv --python=$INSTALL_DEST/$VERSION/bin/$PYTHON_BIN \
   --seeder=pip \
   $HOME/virtualenv/$VIRTENV_VERSION
