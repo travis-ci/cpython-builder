@@ -82,7 +82,7 @@ jobs:
 
 env:
   global:
-    - VERSION=3.9-dev
+    - VERSION=3.13-dev
   # - ALIAS=nightly
 
 install:
@@ -94,6 +94,7 @@ install:
   - sudo git pull
   - popd
   - alias python=python3
+  - sudo python -m pip install virtualenv
   - sudo pip install --upgrade pip
   - sudo pip install setuptools
   #- if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
