@@ -1,8 +1,8 @@
 language: shell
 
-stages:
-  - build
-stage: build
+# stages:
+#   - build
+# stage: build
 
 jobs:
   include:
@@ -34,51 +34,70 @@ jobs:
     - dist: xenial
       env:
         - RELEASE=xenial
-      script:
-        - sudo apt-get update && sudo apt-get install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
       name: xenial
-    - dist: trusty
-      name: trusty
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
-    - dist: precise
-      name: precise
-      if: NOT env(VERSION) =~ -dev$ AND NOT env(VERSION) =~ ^pypy AND NOT env(VERSION) =~ /^3\.([789]|1\d+)/
     - arch: ppc64le
-      dist: xenial
-      name: xenial-ppc64le
-    - arch: ppc64le
-      dist: bionic
-      name: bionic-ppc64le
+      dist: jammy
+      env:
+        - RELEASE=jammy
+      name: jammy-ppc64le
     - arch: ppc64le
       dist: focal
+      env:
+        - RELEASE=focal
       name: focal-ppc64le
     - arch: ppc64le
+      dist: bionic
+      env:
+        - RELEASE=bionic
+      name: bionic-ppc64le
+    - arch: ppc64le
+      dist: xenial
+      env:
+        - RELEASE=xenial
+      name: xenial-ppc64le
+    - arch: s390x
       dist: jammy
-      name: jammy-ppc64le 
+      env:
+        - RELEASE=jammy
+      name: jammy-s390x
+    - arch: s390x
+      dist: focal
+      env:
+        - RELEASE=focal
+      name: focal-s390x
+    - arch: s390x
+      dist: bionic
+      env:
+        - RELEASE=bionic
+      name: bionic-s390x
     - arch: s390x
       dist: xenial
+      env:
+        - RELEASE=xenial
       name: xenial-s390x
-    - arch: s390x
-      dist: bionic
-      name: bionic-s390x  
-    - arch: s390x
-      dist: focal
-      name: focal-s390x   
     - arch: arm64
-      dist: xenial
-      name: xenial-arm64
-    - arch: arm64
-      dist: bionic
-      name: bionic-arm64
+      dist: jammy
+      env:
+        - RELEASE=jammy
+      name: jammy-arm64
     - arch: arm64
       dist: focal
+      env:
+        - RELEASE=focal
       name: focal-arm64
     - arch: arm64
-      dist: jammy
-      name: jammy-arm64
+      dist: bionic
+      env:
+        - RELEASE=bionic
+      name: bionic-arm64
+    - arch: arm64
+      dist: xenial
+      env:
+        - RELEASE=xenial
+      name: xenial-arm64
 
-  allow_failures:
-    - name: freebsd
+allow_failures:
+  - name: freebsd
 
 env:
   global:
@@ -138,7 +157,9 @@ before_script:
       python --version
     fi
 
-script: ./bin/compile
+script: 
+  - sudo apt-get update && sudo apt-get install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
+  - ./bin/compile
 
 after_success: ./bin/archive
 
@@ -160,11 +181,3 @@ addons:
       - default
     cache_control: public
 
-notifications:
-  email: false
-  slack:
-    rooms:
-      secure: "ZZb1XxoEiVqSUYTwQDxDLasQwVyF5s2FUoTI4Hcf66GGr50seBgWvcHpCkbtDbntluoyUB/s9MyuVAsIq/tIu+z2EQpKQN8PGZXYZEb2DzEkRbekyUx4MQufvY3mbIwv69SSs12uq90Ce2R3S+okPvbjCB7HzEufW9wvtl6TwME="
-    on_success: never
-    on_failure: always
-    on_pull_requests: false
