@@ -172,7 +172,7 @@ jobs:
       dist: bionic
       env:
         - RELEASE=bionic
-        - NUMPY_VERSION=1.21.6
+        - NUMPY_VERSION=1.21.1
       name: bionic-ppc64le
 
    # - <<: *defaults_linux
@@ -202,7 +202,7 @@ jobs:
       dist: bionic
       env:
         - RELEASE=bionic
-        - NUMPY_VERSION=1.21.6
+        - NUMPY_VERSION=1.21.1
       name: bionic-s390x
 
   #  - <<: *defaults_linux
