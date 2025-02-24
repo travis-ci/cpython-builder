@@ -1,201 +1,245 @@
 language: shell
-
-# stages:
-#   - build
-# stage: build
-
-jobs:
-  include:
-    - language: bash
-      name: freebsd
-      os: freebsd
-      group: dev
-      install:
-        - pushd /opt/pyenv/
-        - sudo git config --global --add safe.directory /opt/pyenv
-        - sudo git checkout master
-        - sudo git pull
-        - popd
-        - python --version
-        - sudo python -m pip install virtualenv==20.0.2
-    - dist: noble
-      env:
-        - RELEASE=noble
-      name: noble
-    - dist: jammy
-      env:
-        - RELEASE=jammy
-      name: jammy
-    - dist: focal
-      env:
-        - RELEASE=focal
-      name: focal   
-    - dist: bionic
-      env:
-        - RELEASE=bionic
-      name: bionic
-    # - dist: xenial
-    #   env:
-    #     - RELEASE=xenial
-    #   name: xenial
-    - arch: ppc64le
-      dist: noble
-      env:
-        - RELEASE=noble
-      name: noble-ppc64le
-    - arch: ppc64le
-      dist: jammy
-      env:
-        - RELEASE=jammy
-      name: jammy-ppc64le
-    - arch: ppc64le
-      dist: focal
-      env:
-        - RELEASE=focal
-      name: focal-ppc64le
-    - arch: ppc64le
-      dist: bionic
-      env:
-        - RELEASE=bionic
-      name: bionic-ppc64le
-    # - arch: ppc64le
-    #   dist: xenial
-    #   env:
-    #     - RELEASE=xenial
-    #   name: xenial-ppc64le
-    - arch: s390x
-      dist: noble
-      env:
-        - RELEASE=noble
-      name: noble-s390x
-    - arch: s390x
-      dist: jammy
-      env:
-        - RELEASE=jammy
-      name: jammy-s390x
-    - arch: s390x
-      dist: focal
-      env:
-        - RELEASE=focal
-      name: focal-s390x
-    - arch: s390x
-      dist: bionic
-      env:
-        - RELEASE=bionic
-      name: bionic-s390x
-    # - arch: s390x
-    #   dist: xenial
-    #   env:
-    #     - RELEASE=xenial
-    #   name: xenial-s390x
-    - arch: arm64
-      dist: noble
-      env:
-        - RELEASE=noble
-      name: noble-arm64
-    - arch: arm64
-      dist: jammy
-      env:
-        - RELEASE=jammy
-      name: jammy-arm64
-    - arch: arm64
-      dist: focal
-      env:
-        - RELEASE=focal
-      name: focal-arm64
-    - arch: arm64
-      dist: bionic
-      env:
-        - RELEASE=bionic
-      name: bionic-arm64
-    # - arch: arm64
-    #   dist: xenial
-    #   env:
-    #     - RELEASE=xenial
-    #   name: xenial-arm64
-
-allow_failures:
-  - name: freebsd
+sudo: required
 
 env:
   global:
     - VERSION=3.13-dev
   # - ALIAS=nightly
 
-install:
-  # - git clone https://github.com/pyenv/pyenv-update.git $(pyenv root)/plugins/pyenv-update
-  # - pyenv update
-  - pushd /opt/pyenv/
-  - sudo git config --global --add safe.directory /opt/pyenv
-  - sudo git checkout master
-  - sudo git pull
-  - popd
-  - alias python=python3
-  - python -m pip install virtualenv
-  - sudo pip install --upgrade pip
-  - sudo pip install setuptools
-  #- if [[ $(lsb_release -cs) == "jammy" &&  $(uname -m) == "ppc64le" ]]; then alias python=python3; fi
-  # As of this writing:
-  # * Py2 is EOL
-  #   * however, pip (https://pip.pypa.io/en/latest/develss/#python-2-support) intends to keep supporting it as long as practical
-  #   * Virtualenv also supports old versions (e.g. 3.4) far longer than PSF does
-  # * all images have `virtualenv` on PATH but vary in whether it's per-user or global and which Python installation it belongs to
-  #   * some of these preinstalled `virtualenv`s don't support 3.9+
-  # * selected amd64 images have 3.7.* preinstalled with pip; multiarch have pyenv not on PATH, with no alt versions
-  # * xenial's provided Py3, 3.5, is in security fixes mode, due for EOL in 06.2020
-  #
-  # So it seems to be safe to use `virtualenv` with system's Py2 if we update it, for the foreseeable future.
-  # FIXME: use an officially supported alt Python version for `virtualenv` instead once one is available in all images.
-  - |
-    # `cat` avoids "broken pipe"; `freeze` instead of `list` avoids a warning about future output format change
-    if (python -m pip freeze --user | cat | grep -qP '^virtualenv=='); then
-      python -m pip install --upgrade --user virtualenv
-    elif (python -m pip freeze | cat | grep -qP '^virtualenv=='); then
-      sudo python -m pip install --upgrade virtualenv
-    else
-      sudo python -m pip install virtualenv
-    fi
+defaults_linux: &defaults_linux
+  install:
+    - pushd /opt/pyenv/
+    - sudo git config --global --add safe.directory /opt/pyenv
+    - sudo git checkout master
+    - sudo git pull
+    - popd
+    - alias python=python3
+    - |
+      if [ "$RELEASE" = "xenial" ]; then
+        sudo apt-get update
+        sudo apt-get install -y build-essential checkinstall zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libffi-dev libssl-dev wget
+        python3 --version
+        wget https://www.openssl.org/source/openssl-1.1.1u.tar.gz
+        tar xzf openssl-1.1.1u.tar.gz
+        cd openssl-1.1.1u
 
-before_script:
-  - "export INSTALL_DEST=${INSTALL_DEST:-/opt/python}"
-  - 'export LSB_RELEASE=${LSB_RELEASE:-$(lsb_release -rs || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname -r | rev | cut -c9- | rev); else false; fi || echo ${$(sw_vers -productVersion)%*.*})}'
-  - 'export OS_NAME=${OS_NAME:-$((lsb_release -is || if [[ $(uname -a) == *"FreeBSD"* ]]; then echo $(uname | cut -c1-); else false; fi || echo "osx") | tr "A-Z" "a-z")}'
-  - "export ARCH=${ARCH:-$(uname -m)}"
-  # pipenv is supported for python 2.7 and 3.4 and higher.
-  - "export PACKAGES=${PACKAGES:-pip nose pytest mock wheel pipenv dataclasses}"
-  - export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
-  - sudo chown -R $USER $HOME/.cache
-  - |
-    if [[ $VERSION = pypy*-dev ]]; then
-      if ! [[ -f ~/virtualenv/pypy/bin/activate ]]; then
-        curl -O https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2
-        sudo tar xf pypy*.tar.bz2 -C /
+        case "$(uname -m)" in
+          x86_64)
+            OPENSSL_CONFIGURE_TARGET="linux-x86_64"
+            ;;
+          aarch64)
+            OPENSSL_CONFIGURE_TARGET="linux-aarch64"
+            ;;
+          ppc64le)
+            OPENSSL_CONFIGURE_TARGET="linux-ppc64le"
+            ;;
+          s390x)
+            OPENSSL_CONFIGURE_TARGET="linux-s390x"
+            ;;
+          *)
+            echo "Unsupported architecture: $(uname -m)"
+            exit 1
+            ;;
+        esac
+
+        sudo make clean
+        export CC=gcc
+        export CXX=g++
+        sudo ./Configure "$OPENSSL_CONFIGURE_TARGET" --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib enable-ec_nistp_64_gcc_128
+        sudo make depend
+        sudo make -j"$(nproc)"
+        sudo make install
+        sudo mv /usr/bin/openssl /usr/bin/openssl.bak
+        sudo ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl
+
+        echo "/usr/local/openssl/lib" | sudo tee /etc/ld.so.conf.d/openssl.conf
+        sudo ldconfig
+
+        cd ..
+        openssl version -a
       fi
-      source ~/virtualenv/pypy/bin/activate
-      python --version
-    fi
+    - python3 -m pip install --upgrade pip setuptools virtualenv
 
-script: 
-  - sudo apt-get update && sudo apt-get install build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev -y
-  - ./bin/compile
+  before_script:
+    - export INSTALL_DEST="${INSTALL_DEST:-/opt/python}"
+    - export LSB_RELEASE="${LSB_RELEASE:-$(lsb_release -rs)}"
+    - export OS_NAME="${OS_NAME:-$(lsb_release -is | tr 'A-Z' 'a-z')}"
+    - export ARCH="${ARCH:-$(uname -m)}"
+    - export PACKAGES="${PACKAGES:-pip nose pytest mock wheel pipenv dataclasses}"
+    - |
+      if [ "$RELEASE" = "xenial" ]; then
+        export PYTHON_CONFIGURE_OPTS="--with-openssl=/usr/local/openssl --with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
+      else
+        export PYTHON_CONFIGURE_OPTS="--with-wide-unicode --enable-shared --enable-ipv6 --enable-loadable-sqlite-extensions --with-computed-gotos $CONFIGURE_OPTS"
+      fi
+    - sudo chown -R "$USER" "$HOME/.cache"
+    - |
+      if [[ $VERSION == pypy*-dev ]]; then
+        if [ ! -f ~/virtualenv/pypy/bin/activate ]; then
+          curl -O "https://s3.amazonaws.com/travis-python-archives/binaries/ubuntu/$(lsb_release -rs)/x86_64/pypy2.7-5.9.0.tar.bz2"
+          sudo tar xf pypy*.tar.bz2 -C /
+        fi
+        source ~/virtualenv/pypy/bin/activate
+        python --version
+      fi
 
-after_success: ./bin/archive
+  script:
+    - sudo apt-get update && sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev python3-dev gfortran libblas-dev liblapack-dev
+    - ./bin/compile
 
-after_failure: cat /tmp/python-build.*.log
+  after_success: ./bin/archive
+  after_failure: cat /tmp/python-build.*.log
 
-addons:
-  apt:
-    packages:
-      - openssl
-      - libssl-dev
-      - mercurial
-      - python3-pip
-  artifacts:
-    paths:
-      - $LSB_RELEASE/
-    target_paths:
-      - /binaries/$OS_NAME/$LSB_RELEASE/$ARCH
-    branch:
-      - default
-    cache_control: public
+  addons:
+    apt:
+      packages:
+        - openssl
+        - libssl-dev
+        - mercurial
+        - python3-pip
+    artifacts:
+      paths:
+        - "$LSB_RELEASE/"
+      target_paths:
+        - "/binaries/$OS_NAME/$LSB_RELEASE/$ARCH"
+      branch:
+        - default
+      cache_control: public
 
+jobs:
+  include:
+    # - language: bash
+    #   name: freebsd
+    #   os: freebsd
+    #   group: dev
+    #   install:
+    #     - pushd /opt/pyenv/
+    #     - sudo git config --global --add safe.directory /opt/pyenv
+    #     - sudo git checkout master
+    #     - sudo git pull
+    #     - popd
+    #     - python --version
+    #     - sudo python -m ensurepip
+    #     - sudo python -m pip install --upgrade pip
+    #     - sudo python -m pip install virtualenv==20.0.2
+
+    - <<: *defaults_linux
+      dist: noble
+      env:
+        - RELEASE=noble
+      name: noble
+
+    - <<: *defaults_linux
+      dist: jammy
+      env:
+        - RELEASE=jammy
+      name: jammy
+
+    - <<: *defaults_linux
+      dist: focal
+      env:
+        - RELEASE=focal
+      name: focal
+
+    - <<: *defaults_linux
+      dist: bionic
+      env:
+        - RELEASE=bionic
+      name: bionic
+
+    # - <<: *defaults_linux
+    #   dist: xenial
+    #   env:
+    #     - RELEASE=xenial
+    #   name: xenial
+   
+    - <<: *defaults_linux
+      arch: ppc64le
+      dist: jammy
+      env:
+        - RELEASE=jammy
+      name: jammy-ppc64le
+
+    - <<: *defaults_linux
+      arch: ppc64le
+      dist: focal
+      env:
+        - RELEASE=focal
+      name: focal-ppc64le
+
+    - <<: *defaults_linux
+      arch: ppc64le
+      dist: bionic
+      env:
+        - RELEASE=bionic
+        - NUMPY_VERSION=1.21.6
+      name: bionic-ppc64le
+
+   # - <<: *defaults_linux
+   #   arch: ppc64le
+   #   dist: xenial
+   #   env:
+   #     - RELEASE=xenial
+   #     - NUMPY_VERSION=1.21.6
+   #   name: xenial-ppc64le
+
+    - <<: *defaults_linux
+      arch: s390x
+      dist: jammy
+      env:
+        - RELEASE=jammy
+      name: jammy-s390x
+
+    - <<: *defaults_linux
+      arch: s390x
+      dist: focal
+      env:
+        - RELEASE=focal
+      name: focal-s390x
+
+    - <<: *defaults_linux
+      arch: s390x
+      dist: bionic
+      env:
+        - RELEASE=bionic
+        - NUMPY_VERSION=1.21.6
+      name: bionic-s390x
+
+  #  - <<: *defaults_linux
+  #    arch: s390x
+  #    dist: xenial
+  #    env:
+  #      - RELEASE=xenial
+  #      - NUMPY_VERSION=1.21.6
+  #    name: xenial-s390x
+
+    - <<: *defaults_linux
+      arch: arm64
+      dist: jammy
+      env:
+        - RELEASE=jammy
+      name: jammy-arm64
+
+    - <<: *defaults_linux
+      arch: arm64
+      dist: focal
+      env:
+        - RELEASE=focal
+      name: focal-arm64
+
+    - <<: *defaults_linux
+      arch: arm64
+      dist: bionic
+      env:
+        - RELEASE=bionic
+      name: bionic-arm64
+
+  #  - <<: *defaults_linux
+  #    arch: arm64
+  #    dist: xenial
+  #    env:
+  #      - RELEASE=xenial
+  #    name: xenial-arm64
+
+allow_failures:
+  - name: freebsd
