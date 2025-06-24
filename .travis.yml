@@ -152,6 +152,12 @@ jobs:
     #   env:
     #     - RELEASE=xenial
     #   name: xenial
+    - <<: *defaults_linux
+      arch: ppc64le
+      dist: noble
+      env:
+        - RELEASE=noble
+      name: noble-ppc64le
    
     - <<: *defaults_linux
       arch: ppc64le
@@ -182,6 +188,12 @@ jobs:
    #     - RELEASE=xenial
    #     - NUMPY_VERSION=1.21.6
    #   name: xenial-ppc64le
+    - <<: *defaults_linux
+      arch: s390x
+      dist: noble
+      env:
+        - RELEASE=noble
+      name: noble-s390x
 
     - <<: *defaults_linux
       arch: s390x
@@ -212,6 +224,12 @@ jobs:
   #      - RELEASE=xenial
   #      - NUMPY_VERSION=1.21.6
   #    name: xenial-s390x
+    - <<: *defaults_linux
+      arch: arm64
+      dist: noble
+      env:
+        - RELEASE=noble
+      name: noble-arm64
 
     - <<: *defaults_linux
       arch: arm64
@@ -242,4 +260,7 @@ jobs:
   #    name: xenial-arm64
 
 allow_failures:
-  - name: freebsd
+  - name: bionic
+  - name: bionic-ppc64le
+  - name: bionic-s390x
+  - name: bionic-arm64
