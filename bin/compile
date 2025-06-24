@@ -29,10 +29,11 @@ install_numpy() {
 sudo env PYTHON_BUILD_ROOT=/opt/pyenv/plugins/python-build \
   /opt/pyenv/plugins/python-build/bin/python-build --verbose "$VERSION" "$INSTALL_DEST/$VERSION"
 
-if [[ -n "${ALIAS:-}" ]]; then
+# Job fails if you want your name and alias are the same
+if [[ -n "${ALIAS:-}" && "$VERSION" != "$ALIAS" ]]; then
   sudo rm -rf "$INSTALL_DEST/$ALIAS"
-  sudo ln -sf "$INSTALL_DEST/$VERSION" "$INSTALL_DEST/$ALIAS"
 fi
+sudo ln -sf "$INSTALL_DEST/$VERSION" "$INSTALL_DEST/$ALIAS"
 
 if [[ "$VERSION" == pypy3* ]]; then
   PYTHON_BIN="pypy3"
